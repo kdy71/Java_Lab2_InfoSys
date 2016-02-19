@@ -1,5 +1,7 @@
 package client.controller;
 
+import client.model.ISClient;
+
 import java.io.PrintStream;
 
 /**
@@ -10,6 +12,7 @@ public class Main_Client {
 
     public static void main(String[] args){
         System.out.println("I am client");  // debug
+        ISClient client1 = new ISClient();
 
     }
 

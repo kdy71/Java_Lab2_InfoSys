@@ -60,4 +60,15 @@ public class Student {
     public void setEnrollmentDate(Date enrollmentDate) {
         this.enrollmentDate = enrollmentDate;
     }
+
+    @Override
+    public String toString() {
+        return "Student{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", group_id=" + group_id +
+                ", group=" + group +
+                ", enrollmentDate=" + enrollmentDate +
+                '}';
+    }
 }
