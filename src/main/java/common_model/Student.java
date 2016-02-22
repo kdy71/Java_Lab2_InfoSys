@@ -7,25 +7,27 @@ import java.util.Date;
  * Students
  */
 public class Student {
+
     private int id;
     private String name;
-    private int group_id;
     private Group group;
     private Date enrollmentDate;
 
-    public Student(int id, String name, Date enrollmentDate, Group group) {
-        this.id = id;
+    public Student(String name) {
+        this.name = name;
+    }
+    
+    public Student(String name, Date enrollmentDate, Group group) {
         this.name = name;
         this.enrollmentDate = enrollmentDate;
         this.group = group;
     }
 
-
     public int getId() {
         return id;
     }
 
-    public void setId(int id) {
+    void setId(int id) {
         this.id = id;
     }
 
@@ -36,15 +38,7 @@ public class Student {
     public void setName(String name) {
         this.name = name;
     }
-
-    public int getGroup_id() {
-        return group_id;
-    }
-
-    public void setGroup_id(int group_id) {
-        this.group_id = group_id;
-    }
-
+    
     public Group getGroup() {
         return group;
     }
@@ -58,6 +52,18 @@ public class Student {
     }
 
     public void setEnrollmentDate(Date enrollmentDate) {
+        if (this.enrollmentDate == null) {
         this.enrollmentDate = enrollmentDate;
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "Student{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", group=" + group +
+                ", enrollmentDate=" + enrollmentDate +
+                '}';
     }
 }

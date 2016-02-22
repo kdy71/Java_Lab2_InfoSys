@@ -1,4 +1,4 @@
-package server.controller;
+package main.java.server.controller;
 
 /**
  * Created by Dmitry Khoruzhenko, Oleksandr Dudkin on 15.02.2016.
