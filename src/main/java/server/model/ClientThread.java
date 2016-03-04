@@ -25,7 +25,7 @@ public class ClientThread implements Runnable {
         myName="Client"+num;//порядковый  номер который добавляется к имени клиента
     }
 
-    @Override
+//    @Override
     public void run() {
 
         while(socket !=null){ //пока сокет "жив"

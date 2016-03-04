@@ -10,15 +10,24 @@ public class Student {
     private int id;
     private String name;
     private int group_id;
-    private Group group;
+    private /*Group*/String  group;
     private Date enrollmentDate;
 
-    public Student(int id, String name, Date enrollmentDate, Group group) {
+//    public Student(int id, String name, Date enrollmentDate, Group group) {
+    public Student(int id, String name, Date enrollmentDate, String group) {
         this.id = id;
         this.name = name;
         this.enrollmentDate = enrollmentDate;
         this.group = group;
     }
+
+    public Student(int id, String name, Date enrollmentDate, int group_id) {
+        this.id = id;
+        this.name = name;
+        this.enrollmentDate = enrollmentDate;
+        this.group_id = group_id;
+    }
+
 
 
     public int getId() {
@@ -45,11 +54,13 @@ public class Student {
         this.group_id = group_id;
     }
 
-    public Group getGroup() {
+//    public Group getGroup() {
+    public String getGroup() {
         return group;
     }
 
-    public void setGroup(Group group) {
+//    public void setGroup(Group group) {
+    public void setGroup(String group) {
         this.group = group;
     }
 
