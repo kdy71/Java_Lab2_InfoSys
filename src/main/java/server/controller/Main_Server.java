@@ -1,4 +1,5 @@
-package server.controller;
+//package main.java.server.controller; проблема с путями пекеджей!!! было после закачки и выдавало ошибку
+package server.controller; // исправил ошибку
 
 import server.model.ISServer;
 
@@ -12,5 +13,4 @@ public class Main_Server {
         System.out.println("I am server");  // debug
         ISServer server1 = new ISServer();
     }
-
 }

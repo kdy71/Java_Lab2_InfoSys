@@ -1,8 +1,6 @@
 package client.model;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.net.Socket;
 
 /**
@@ -11,64 +9,67 @@ import java.net.Socket;
  */
 public class ISClient {
     private String serverHostName = "localhost";
-    private int  serverPort = 50001;
+    private int serverPort = 50001;
+    private String message;
+    private InputStream is = null;
+    private OutputStream os = null;
+    Socket socket = null;
 
-    public ISClient(String serverHostName, int serverPort) {
+
+    public ISClient(String message) {
         super();
-        this.serverHostName = serverHostName;
-        this.serverPort = serverPort;
-        StartClient();
+        this.message = message;
+        startClient();
     }
 
     public ISClient() {
         super();
-        StartClient();
+        startClient();
     }
 
-    private void StartClient()  {
+    //конструктор с сообщением - хмл строкой объекта
+    public void setMessage(String message) {
+        this.message = message;
+    }
 
-        Socket socket = null;
-        ObjectOutputStream oos = null;
-        ObjectInputStream ois = null;
-        for(int i=0; i<5;i++){
+    private void startClient() {
+        for (int i = 0; i < 1; i++) {
             try {
                 socket = new Socket(serverHostName, serverPort);  //establish socket connection to server
-                oos = new ObjectOutputStream(socket.getOutputStream());  //write to socket using ObjectOutputStream
-                System.out.println("Sending request to Socket Server "+i);
+                os = socket.getOutputStream(); //write to socket using ObjectOutputStream
+                System.out.println("Sending request to Socket Server " + i);
 
-                if(i==4) {
-                    oos.writeObject("exit");
-                    break;
-                }
-                else {
-                    oos.writeObject("hello from client "+i);
+
+                if (i == 0) {
+                    writeStringToServer(message);
                 }
 
-
-                ois = new ObjectInputStream(socket.getInputStream());  //read the server response message
-                String message = null;
-                try {
-                    message = (String) ois.readObject();
-                } catch (ClassNotFoundException e) {
-                    e.printStackTrace();
+                if (i == 1) {
+                    message = "EXIT";
+                    writeStringToServer(message);
                 }
-                System.out.println("Message: " + message);
 
-                //close resources
-                ois.close();
-                oos.close();
+                os.close();
                 try {
                     Thread.sleep(100);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-            }
-            catch (IOException e) {
+            } catch (IOException e) {
                 System.out.println(e.getMessage());
-//                throw new IOException(e);
                 e.printStackTrace();
             }
         }
     }
 
+    private void writeStringToServer(String message) throws IOException {
+        if (message != null) {
+            for (int j = 0; j < message.length(); j++) {
+                os.write((byte) message.charAt(j));
+            }
+            os.write('\r');
+            os.flush();
+
+        }
+    }
 }

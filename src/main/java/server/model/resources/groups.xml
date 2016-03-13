@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<groups>
+    <group>
+        <id>1</id>
+        <name>A-1</name>
+        <facultyName>Engineering</facultyName>
+    </group>
+    <group>
+        <id>2</id>
+        <name>B-2</name>
+        <facultyName>Gumfac</facultyName>
+    </group>
+<group>
+<id>5</id>
+<name>E-91</name>
+<facultyName>Econom</facultyName>
+</group>
+<group>
+<id>6</id>
+<name>E-91</name>
+<facultyName>Econom</facultyName>
+</group>
+<group>
+<id>7</id>
+<name>E-91</name>
+<facultyName>Econom</facultyName>
+</group>
+</groups>

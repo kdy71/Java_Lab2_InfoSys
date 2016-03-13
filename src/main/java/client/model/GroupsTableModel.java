@@ -1,5 +1,6 @@
 package client.model;
 
+import common_model.AdminInterface;
 import common_model.Group;
 import javax.swing.table.AbstractTableModel;
 import java.util.ArrayList;
@@ -13,14 +14,20 @@ public class GroupsTableModel extends AbstractTableModel {
 
     private static final long serialVersionUID = 2000L;
     private int columnCount = 3;
-    private List<Group> groupsList = new ArrayList<Group>();  // хранилище данных
+    private List<Group> groupsList; // = new ArrayList<Group>();  // хранилище данных
+    private AdminInterface admin;
+
+    public GroupsTableModel(AdminInterface admin) {  // constructor
+        super();
+        this.admin = admin;
+        groupsList = admin.getGroups();
+    }
 
     public GroupsTableModel() {  // constructor
         super();
-//        for (int i=0; i<studentsList.size(); i++) {
-//            studentsList.add(new Student(i, "aaa", new Date(), "vvv"));
-//        }
+//        this.groups = new Groups();
     }
+
 
     //    @Override
     public int getRowCount() {
@@ -35,7 +42,7 @@ public class GroupsTableModel extends AbstractTableModel {
     //    @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
         Group currGroup = groupsList.get(rowIndex);
-        if (columnIndex == 0) return  Integer.valueOf (currGroup.getId());
+        if (columnIndex == 0) return  currGroup.getId();
         if (columnIndex==1) return  currGroup.getName();
         if (columnIndex==2) return  currGroup.getFacultyName();
         return "???";
@@ -60,6 +67,26 @@ public class GroupsTableModel extends AbstractTableModel {
     public void addData (Group group) {
         groupsList.add(group);
     }
+
+    public Group getGroupById(int id) {
+        for (Group currGroup : groupsList) {
+            if (currGroup.getId() == id) {return currGroup;}
+        }
+        return null;
+    }
+
+    public Group getGroupByName(String groupName) {
+        for (Group currGroup : groupsList) {
+            if (currGroup.getName() == groupName) {return currGroup;}
+        }
+        return null;
+    }
+
+    public List<Group> getGroupList(){
+        return groupsList;
+    }
+
+
 
 
     public void sortById() {
