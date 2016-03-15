@@ -74,6 +74,15 @@ public class Administration implements AdminInterface {
         return groups.add(group);
     }
 
+
+    public boolean addStudent(Student student) {
+        if (student == null) {
+            throw new IllegalArgumentException("The added student is null!");
+        }
+        return students.add(student);
+    }
+
+
     public boolean removeEmptyGroup(Group group) {
         //if (!group.isEmpty()) throw new IllegalArgumentException("The group is not empty!");
         if (!groups.contains(group)) {
@@ -146,5 +155,25 @@ public class Administration implements AdminInterface {
             if (currStudent.getId().equals(id)) {return currStudent;}
         }
         return null;
+    }
+
+    @Override
+    public Student getStudentByIndex(int index) {
+        return students.get(index);
+    }
+
+    @Override
+    public Group getGroupByIndex(int index) {
+        return groups.get(index);
+    }
+
+    @Override
+    public int getStudentsCount() {
+        return students.size();
+    }
+
+    @Override
+    public int getGroupsCount() {
+        return groups.size();
     }
 }

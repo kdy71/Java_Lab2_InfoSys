@@ -1,5 +1,7 @@
 package client.view;
 
+import client.model.IoInterface;
+import client.model.IoXML;
 import client.model.StudentsTableModel;
 import common_model.*;
 
@@ -28,27 +30,24 @@ public class StudentsGUI extends TemplateGUI {
     private JTextField edEnrollmentDate = new JTextField(10);
     private JButton btOk = new JButton("Сохранить");
     private JButton btCancel = new JButton("Отменить");
+    private Integer editingStudentId = null;
+    private IoInterface io ;
 
-
-
+/*
     public StudentsGUI() {
         super();
         this.stm = new StudentsTableModel();
         initStudents();
     }
+*/
 
     public StudentsGUI(StudentsTableModel stm) {
         this.stm = stm;
+        io = new IoXML(stm.getAdminInterface());
         initStudents();
     }
 
-    /*
-        public StudentsGUI(List<Group> groups) {
-            super();
-            this.groups = groups;
-            initStudents();
-        }
-    */
+
     private void initStudents() {
         super.frame.setTitle("Студенты");
 
@@ -86,36 +85,47 @@ public class StudentsGUI extends TemplateGUI {
 
     @Override
     protected void onAddClick(){
-//        System.out.println("AddClick");
+//        System.out.println("AddClick ");
         setDataState(DS_ADD);
         super.onAddClick();
 //        Student student1 = new Student("Петров П.П.", new Date(), 1);
 //        stm.addData(student1);
 //        stm.fireTableDataChanged();  // перерисовать таблицу
-//        System.out.println("AddClick " + stm.getRowCount());
+        System.out.println("AddClick " + stm.getRowCount());
+
         edEnrollmentDate.setText( Util.dat2Str(new Date()));
+        editingStudentId = null;
     }
 
     @Override
     protected void onEditClick(){
 //        System.out.println("EditStudent_Click");
-        if (table.getSelectedRow() == -1) {
+        int row = table.getSelectedRow();
+        if (row == -1) {
             Util.showMessage("Не выбрана строка для редактирования.");
             return;
         }
         setDataState(DS_EDIT);
-        int row = table.getSelectedRow();
         System.out.println("table.getSelectedRow() " + table.getSelectedRow());
         edFIO.setText((String)stm.getValueAt(row, 1));
         edEnrollmentDate.setText((String)stm.getValueAt(row, 2));
         edGroup.setText((String)stm.getValueAt(row, 3));
+        editingStudentId = (Integer)stm.getValueAt(row, 0);
     }
 
     @Override
     protected void onDelClick(){
 //        System.out.println("DelClick");
-        super.onDelClick();
-
+        int row = table.getSelectedRow();
+        if (row == -1) {
+            Util.showMessage("Не выбрана строка для удаления.");
+            return;
+        }
+        boolean answYes  = Util.showYesNoMessage("Точно удалить студента?");
+        if (answYes){
+            int id4del = (Integer)stm.getValueAt(row, 0);
+            io.deleteStudent(id4del);
+        }
     }
 
     @Override
@@ -126,12 +136,8 @@ public class StudentsGUI extends TemplateGUI {
 
     private class OkButton_ActionListener implements ActionListener {
         public void actionPerformed(ActionEvent event) {
-            Integer studentId = null;  // Для DS_ADD
-            if (getDataState() == DS_EDIT ){
-                studentId = (Integer)stm.getValueAt(table.getSelectedRow(), 0);
-            }
 //            Boolean checkOk = stm.checkAndSaveStudent(edFIO.getText(), edEnrollmentDate.getText(), edGroup.getText());
-            Student editedStudent = stm.checkAndSaveStudent(studentId, edFIO.getText(), edEnrollmentDate.getText(), edGroup.getText());
+            Student editedStudent = stm.checkAndSaveStudent(editingStudentId, edFIO.getText(), edEnrollmentDate.getText(), edGroup.getText());
             if (editedStudent != null) {
                 setDataState(DS_BROWSE);
             }

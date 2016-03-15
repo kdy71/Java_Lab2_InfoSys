@@ -3,7 +3,6 @@ package client.model;
 import common_model.AdminInterface;
 import common_model.Group;
 import javax.swing.table.AbstractTableModel;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -13,14 +12,15 @@ import java.util.List;
 public class GroupsTableModel extends AbstractTableModel {
 
     private static final long serialVersionUID = 2000L;
-    private int columnCount = 3;
-    private List<Group> groupsList; // = new ArrayList<Group>();  // хранилище данных
+    private final int columnCount = 3;
+//    private List<Group> groupsList; // = new ArrayList<Group>();  // хранилище данных
     private AdminInterface admin;
+    private IoInterface io = new IoXML(admin);
 
     public GroupsTableModel(AdminInterface admin) {  // constructor
         super();
         this.admin = admin;
-        groupsList = admin.getGroups();
+//        groupsList = admin.getGroups();
     }
 
     public GroupsTableModel() {  // constructor
@@ -28,10 +28,12 @@ public class GroupsTableModel extends AbstractTableModel {
 //        this.groups = new Groups();
     }
 
+    public AdminInterface getAdminInterface(){ return admin;}
+
 
     //    @Override
     public int getRowCount() {
-        return groupsList.size();
+        return admin.getGroupsCount();
     }
 
     //    @Override
@@ -41,7 +43,7 @@ public class GroupsTableModel extends AbstractTableModel {
 
     //    @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-        Group currGroup = groupsList.get(rowIndex);
+        Group currGroup = admin.getGroupByIndex(rowIndex);
         if (columnIndex == 0) return  currGroup.getId();
         if (columnIndex==1) return  currGroup.getName();
         if (columnIndex==2) return  currGroup.getFacultyName();
@@ -63,40 +65,15 @@ public class GroupsTableModel extends AbstractTableModel {
     }
 
 
-
     public void addData (Group group) {
-        groupsList.add(group);
+        admin.addGroup(group);
     }
 
-    public Group getGroupById(int id) {
-        for (Group currGroup : groupsList) {
-            if (currGroup.getId() == id) {return currGroup;}
-        }
-        return null;
+    public Group checkSndSaveGroup(Integer id, String grName, String facultyName){
+
+        Group newGroup = new Group(id, grName, facultyName);
+        io.saveGroup(newGroup);
+        return  newGroup;
     }
-
-    public Group getGroupByName(String groupName) {
-        for (Group currGroup : groupsList) {
-            if (currGroup.getName() == groupName) {return currGroup;}
-        }
-        return null;
-    }
-
-    public List<Group> getGroupList(){
-        return groupsList;
-    }
-
-
-
-
-    public void sortById() {
-/*
-        Collections.sort(studentsList, new Comparator<Student>() {
-            int compare(Student o1, Student o2) {
-                return o1.getId().compareTo(o2.getId());
-            }
-        });
-        */
-    };
 
 }

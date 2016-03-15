@@ -226,4 +226,12 @@ public class Util {
     }
 
 
+    public static boolean showYesNoMessage(String message) {
+        Object[] options = { "Да", "Нет!" };
+        int n = JOptionPane.showOptionDialog(new JFrame(), message ,
+                "Подтверждение", JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+        return (n==0);
+    }
+
 }

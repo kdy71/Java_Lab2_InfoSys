@@ -17,24 +17,27 @@ public class StudentsTableModel extends AbstractTableModel {
 
     private static final long serialVersionUID = 1000L;
     private int columnCount = 4;
-    private List<Student> studentsList = new ArrayList<Student>();  // хранилище данных
+//    private List<Student> studentsList = new ArrayList<Student>();  // хранилище данных
 //    private List<Group> groups;  // список групп
     private AdminInterface admin;
-    private IoInterface io = new IoXML();
-
+    private IoInterface io = new IoXML(admin);
+/*
     public StudentsTableModel() {  // constructor
         super();
     }
-
+*/
     public StudentsTableModel(AdminInterface admin) {  // constructor
         super();
         this.admin = admin;
+        System.out.println("adm.getAllStudents().size()= "+admin.getAllStudents().size());  // debug
     }
 
+    public AdminInterface getAdminInterface(){ return admin;}
 
     //    @Override
     public int getRowCount() {
-        return studentsList.size();
+        return admin.getStudentsCount();
+//        return  studentsList.size();
     }
 
 
@@ -46,7 +49,8 @@ public class StudentsTableModel extends AbstractTableModel {
 
     //    @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-        Student currStudent = studentsList.get(rowIndex);
+//        Student currStudent = studentsList.get(rowIndex);
+        Student currStudent = admin.getStudentByIndex(rowIndex);
         if (columnIndex == 0) {
             return currStudent.getId();
 //            if    (currStudent.getId() == null)    return "";
@@ -74,7 +78,8 @@ public class StudentsTableModel extends AbstractTableModel {
 
 
     public void addData (Student student) {
-        studentsList.add(student);
+//        studentsList.add(student);
+        admin.addStudent(student);
     }
 
 
@@ -88,7 +93,7 @@ public class StudentsTableModel extends AbstractTableModel {
     public Student checkAndSaveStudent(Integer id, String fio, String stDateIn, String stGroupName) {
 //    public boolean checkAndSaveStudent(String fio, String stDateIn, String stGroupName) {
         Date dateIn;
-        Student result = null;
+//        Student result = null;
         try {
             dateIn = Util.str2Date(stDateIn);
         } catch (ParseException e) {

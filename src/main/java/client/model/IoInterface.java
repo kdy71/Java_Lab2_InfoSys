@@ -16,9 +16,9 @@ public interface IoInterface {
 
     public void saveGroup (Group group);
 
-    public void deleteStudent();
+    public void deleteStudent(int id4Del);
 
-    public void deleteGroup();
+    public void deleteGroup(int id4Del);
 
     public List<Group> readGroups();
 

@@ -47,6 +47,7 @@ public class XmlClientOperations {
             JAXBContext context = JAXBContext.newInstance(object.getClass());
             Marshaller marshaller = context.createMarshaller();
             marshaller.marshal(object, document);
+            // TODO: 15.03.2016   Саня, ты тут не обработаешь исключения. Выбрасывай их выше.
         } catch (ParserConfigurationException e) {
             e.printStackTrace();
         } catch (JAXBException e) {

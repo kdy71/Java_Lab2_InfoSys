@@ -21,6 +21,8 @@ public interface AdminInterface {
 
     public boolean addGroup(Group group);
 
+    public boolean addStudent(Student student);
+
     public boolean removeEmptyGroup(Group group);
 
     public boolean enrollNewStudent(Student student, Date enrollmentDate, Group group);
@@ -37,5 +39,13 @@ public interface AdminInterface {
 
     public Student getStudentById(Integer id);
 
-    }
+    public Student getStudentByIndex(int index);
+
+    public Group getGroupByIndex(int index);
+
+    public int getStudentsCount();
+
+    public int getGroupsCount();
+
+}
 
