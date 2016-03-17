@@ -31,7 +31,7 @@ public class Student {
         this.groupId = groupId;
     }
 
-    public Student(Integer id, String name, Date enrollmentDate, int groupId) {
+    public Student(Integer id, String name, Date enrollmentDate, Integer groupId) {
         this.id = id;
         this.name = name;
         this.enrollmentDate = enrollmentDate;

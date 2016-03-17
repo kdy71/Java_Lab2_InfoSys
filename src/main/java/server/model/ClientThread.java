@@ -48,7 +48,7 @@ public class ClientThread implements Runnable {
 
                 //XmlServerOperations.addObjectToXmlFile(newObject, document);
 
-                break; //после операций с объектом выход
+         //       break; //после операций с объектом выход
 
                 // **********************
                 // EXECUTING CLIENT QUERY   // обрабатываем запрос клиента
@@ -56,6 +56,7 @@ public class ClientThread implements Runnable {
 
             } catch (IOException ex) {
                 System.out.println("Error initialization clients streams:  " + ex.getMessage());
+                break;
             } finally {//при закрытии сокета
                 try {
                     if (is != null) {
@@ -67,7 +68,8 @@ public class ClientThread implements Runnable {
                     if (socket != null) {
                         socket.close();
                     }
-                    System.out.println("Client disconnect");
+                    System.out.println("Client disconnect ok");
+
 
                 } catch (IOException ex) {
                     System.out.println("Client thread error:  " + ex.getMessage());

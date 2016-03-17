@@ -17,37 +17,36 @@ public class StudentsTableModel extends AbstractTableModel {
 
     private static final long serialVersionUID = 1000L;
     private int columnCount = 4;
-//    private List<Student> studentsList = new ArrayList<Student>();  // хранилище данных
-//    private List<Group> groups;  // список групп
     private AdminInterface admin;
     private IoInterface io = new IoXML(admin);
-/*
-    public StudentsTableModel() {  // constructor
-        super();
-    }
-*/
+    private Student searchTemplate = new Student(null, null, null, null);
+
+
     public StudentsTableModel(AdminInterface admin) {  // constructor
         super();
         this.admin = admin;
-        System.out.println("adm.getAllStudents().size()= "+admin.getAllStudents().size());  // debug
+        io.selectStudents(searchTemplate);   // запрос серверу на получение списка  студентов
+        System.out.println("stm constructor. adm.getAllStudents().size()= "+admin.getAllStudents().size());  // debug
     }
 
     public AdminInterface getAdminInterface(){ return admin;}
 
-    //    @Override
+
+
+    @Override
     public int getRowCount() {
         return admin.getStudentsCount();
 //        return  studentsList.size();
     }
 
 
-    //    @Override
+    @Override
     public int getColumnCount() {
         return columnCount;
     }
 
 
-    //    @Override
+    @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
 //        Student currStudent = studentsList.get(rowIndex);
         Student currStudent = admin.getStudentByIndex(rowIndex);
@@ -120,17 +119,54 @@ public class StudentsTableModel extends AbstractTableModel {
     }
 
 
+    public void refreshGrid(){
+        fireTableDataChanged();
+    }
+
+
+    public Student getSearchTemplate() {
+        return searchTemplate;
+    }
+
+    /**
+     * Установка шаблона поиска + запрос серверу на select
+     * @param searchTemplate - шаблон поиска
+     */
+    public void setSearchTemplate(Student searchTemplate) {
+        this.searchTemplate = searchTemplate;
+        io.selectStudents(searchTemplate);
+    }
 
 
 
     public void sortById() {
-/*
-        Collections.sort(studentsList, new Comparator<Student>() {
-            int compare(Student o1, Student o2) {
-                return o1.getId().compareTo(o2.getId());
-            }
-        });
-        */
+         admin.getAllStudents().sort(new ComparatorById());
     };
 
+
+    public void sortByName() {
+        admin.getAllStudents().sort(new ComparatorByFio());
+    };
+
+
+    public class ComparatorById implements Comparator<Student> {
+        @Override
+        public int compare(Student o1, Student o2) {
+            Integer id1 = o1.getId();
+            Integer id2 = o2.getId();
+            return (id1.compareTo(id2));
+        }
+    }
+
+    public class ComparatorByFio implements Comparator<Student> {
+        @Override
+        public int compare(Student o1, Student o2) {
+            String fio1 = o1.getName();
+            String fio2 = o2.getName();
+            return (fio1.compareTo(fio2));
+        }
+    }
+
+
  }
+

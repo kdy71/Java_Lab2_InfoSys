@@ -20,8 +20,22 @@ public interface IoInterface {
 
     public void deleteGroup(int id4Del);
 
-    public List<Group> readGroups();
+    /**
+     * Посылает на сервер запрос на выборку групп
+     * Параметр - шаблон для условий выборки по атрибутам (если атрибут != null - значит по нему будет фильтр)
+     * @param templateGroup
+     * @return
+     */
+    public List<Group> selectGroups(Group templateGroup);
 
-    public List<Student> readStudents();
+
+    /**
+     * Посылает на сервер запрос на выборку студентов
+     * Параметр - шаблон для условий выборки по атрибутам (если атрибут != null - значит по нему будет фильтр)
+     * @param templateStudent
+     * @return
+     */
+    public List<Student> selectStudents(Student templateStudent);
+
 
 }

@@ -176,4 +176,15 @@ public class Administration implements AdminInterface {
     public int getGroupsCount() {
         return groups.size();
     }
+
+    @Override
+    public void replaceAllStudents(List<Student> newStudents) {
+        students = newStudents;
+    }
+
+    @Override
+    public void replaceAllGroups(List<Group> newGroups) {
+        groups = newGroups;
+    }
+
 }

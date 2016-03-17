@@ -49,12 +49,12 @@ public class ISServer {
 
                 ClientThread client = new ClientThread(incomingSocket, nextClientId); //создаем новый тред для каждого клиента, передаем в тред сокет и номер
                 clientList.add(client); //добавляем тред клиента в список клиентов
-                System.out.println("aa");
+//                System.out.println("aa");
                 Thread t = new Thread(client);
                 nextClientId++;
-                System.out.println("bb");
+//                System.out.println("bb");
                 t.start(); //запускаем метод start у треда
-                System.out.println("cc");
+//                System.out.println("cc");
             }
 
             System.out.println("Shutting down Socket server!!"); // сообщение при закрытии соединения

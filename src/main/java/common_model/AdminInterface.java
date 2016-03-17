@@ -47,5 +47,9 @@ public interface AdminInterface {
 
     public int getGroupsCount();
 
+    public void replaceAllStudents(List<Student> newStudents);
+
+    public void replaceAllGroups(List<Group> newGroups);
+
 }
 

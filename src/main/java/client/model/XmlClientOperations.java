@@ -70,6 +70,20 @@ public class XmlClientOperations {
         LSSerializer lsSerializer = domImplementation.createLSSerializer();
         return lsSerializer.writeToString(document);
     }
+
+    /**
+     * Парсит сообщение с сервера и делает из него объект (список студентов, список групп, команда..? )
+     * Вызывается из  Main_Client. stringXML_2Obj
+     * @param msgXML
+     * @return
+     */
+    public Object parseServerMsg_2Obj(String msgXML){
+        // TODO: 16.03.2016 Создать из строки XML список студентов или групп
+        // затем admin. replaceAllStudents(List<Student> newStudents)
+        // затем StudentsTableModel. refreshGrid()
+        // вопрос как связать классы
+        return null;
+    }
 }
 
 

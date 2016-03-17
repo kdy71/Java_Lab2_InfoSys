@@ -16,11 +16,12 @@ public class GroupsTableModel extends AbstractTableModel {
 //    private List<Group> groupsList; // = new ArrayList<Group>();  // хранилище данных
     private AdminInterface admin;
     private IoInterface io = new IoXML(admin);
+    private Group searchTemplate = new Group(null, null, null);
 
     public GroupsTableModel(AdminInterface admin) {  // constructor
         super();
         this.admin = admin;
-//        groupsList = admin.getGroups();
+        io.selectGroups(searchTemplate); // // запрос серверу на получение списка  групп
     }
 
     public GroupsTableModel() {  // constructor
@@ -75,5 +76,20 @@ public class GroupsTableModel extends AbstractTableModel {
         io.saveGroup(newGroup);
         return  newGroup;
     }
+
+
+    public Group getSearchTemplate() {
+        return searchTemplate;
+    }
+
+    /**
+     * Установка шаблона поиска + запрос серверу на select
+     * @param searchTemplate - шаблон поиска
+     */
+    public void setSearchTemplate(Group searchTemplate) {
+        this.searchTemplate = searchTemplate;
+        io.selectGroups(searchTemplate);
+    }
+
 
 }

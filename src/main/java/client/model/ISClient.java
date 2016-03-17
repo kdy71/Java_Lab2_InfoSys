@@ -1,5 +1,7 @@
 package client.model;
 
+import common_model.Util;
+
 import java.io.*;
 import java.net.Socket;
 
@@ -27,31 +29,47 @@ public class ISClient {
         startClient();
     }
 
+    public InputStream getInputStream() { return is;}
+
+    public OutputStream getOutputStream() { return os;}
+
+    public Socket getSocket() {return socket;}
+
     //конструктор с сообщением - хмл строкой объекта
     public void setMessage(String message) {
         this.message = message;
     }
 
     private void startClient() {
-        for (int i = 0; i < 1; i++) {
-            try {
-                socket = new Socket(serverHostName, serverPort);  //establish socket connection to server
+//        for (int i = 0; i < 1; i++) {
+        try {
+            socket = new Socket(serverHostName, serverPort);  //establish socket connection to server
+        } catch (IOException e) {
+            // log4j
+            Util.showError("Нет соединения с сервером. Приложение будет закрыто.");
+            System.exit(1);
+        }
+        try {
                 os = socket.getOutputStream(); //write to socket using ObjectOutputStream
-                System.out.println("Sending request to Socket Server " + i);
+                is = socket.getInputStream();
+                System.out.println("Sending request to Socket Server " );
 
 
-                if (i == 0) {
+//                if (i == 0) {
                     writeStringToServer(message);
-                }
+//                }
 
-                if (i == 1) {
+/*                if (i == 1) {
                     message = "EXIT";
                     writeStringToServer(message);
                 }
-
-                os.close();
+*/
+                System.out.println("socket 1 =" + socket); // debug
+          //      os.close();
+                System.out.println("socket 2 =" + socket); // debug
                 try {
                     Thread.sleep(100);
+                    System.out.println("socket 3 =" + socket); // debug
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -59,7 +77,7 @@ public class ISClient {
                 System.out.println(e.getMessage());
                 e.printStackTrace();
             }
-        }
+//        }
     }
 
     private void writeStringToServer(String message) throws IOException {

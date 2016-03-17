@@ -71,11 +71,11 @@ public class IoXML implements IoInterface {
     }
 
 
-    public List<Group> readGroups() {
+    public List<Group> selectGroups(Group templateGroup) {
         return null;
     }
 
-    public List<Student> readStudents() {
+    public List<Student> selectStudents(Student templateStudent) {
         return null;
     }
 
