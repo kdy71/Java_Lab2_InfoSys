@@ -1,7 +1,5 @@
 package client.view;
 
-import common_model.Util;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -17,11 +15,11 @@ public class TemplateGUI {
     public final int DS_ADD = 3;
     private int dataState = DS_BROWSE;
 
-    protected JFrame frame = new JFrame("Template"); ;
+    protected JFrame frame = new JFrame("Template");
     protected JScrollPane scrollPane = new JScrollPane();
 
-    protected JPanel panelButtons  = new JPanel(new FlowLayout());  // FlowLayout - всё в одном ряду, слева направо. Не хватит места - перенос. Выравн. по центру.
-    protected JPanel panelEdit = new JPanel(new GridLayout(4,2) ); //(new FlowLayout());
+    protected JPanel panelButtons = new JPanel(new FlowLayout());  // FlowLayout - всё в одном ряду, слева направо. Не хватит места - перенос. Выравн. по центру.
+    protected JPanel panelEdit = new JPanel(new GridLayout(4, 2)); //(new FlowLayout());
     protected JPanel panelStatusBar = new JPanel(new FlowLayout());
 
     private JButton addButton = new JButton("Добавить");
@@ -39,6 +37,7 @@ public class TemplateGUI {
 
     /**
      * Управляет видимостью панели редактирования и панели с кнопками
+     *
      * @param state (true/false) - редактирование или нет
      */
     protected void setDataState(int state) {
@@ -63,8 +62,8 @@ public class TemplateGUI {
     }
 */
 
-    private void init(){
-        frame.setSize(500,300);
+    private void init() {
+        frame.setSize(500, 300);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 //        frame.setLocation(100,100);
         frame.setLayout(new GridBagLayout());  // GridBagLayout  - указывать координаты элементов c.gridx, c.gridy
@@ -104,21 +103,21 @@ public class TemplateGUI {
     }
 
 
-    protected void onAddClick(){
+    protected void onAddClick() {
 //        System.out.println("AddClick");
         setDataState(DS_ADD);
     }
 
-    protected void onEditClick(){
+    protected void onEditClick() {
 //        System.out.println("EditClick");
         setDataState(DS_EDIT);
     }
 
-    protected void onDelClick(){
+    protected void onDelClick() {
 //        System.out.println("DelClick");
     }
 
-    protected void onSelectClick(){
+    protected void onSelectClick() {
 //        System.out.println("SelectClick");
     }
 

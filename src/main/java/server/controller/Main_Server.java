@@ -9,7 +9,7 @@ import server.model.ISServer;
  */
 public class Main_Server {
 
-    public static void main(String[] args){
+    public static void main(String[] args) {
         System.out.println("I am server");  // debug
         ISServer server1 = new ISServer();
     }

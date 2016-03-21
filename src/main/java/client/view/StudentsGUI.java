@@ -1,15 +1,14 @@
 package client.view;
 
-import client.model.IoInterface;
-import client.model.IoXML;
 import client.model.StudentsTableModel;
-import common_model.*;
+import common_model.Student;
+import common_model.Util;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.*;
+import java.util.Date;
 
 /**
  * Created by Dmitry Khoruzhenko on 01.03.2016.
@@ -17,7 +16,7 @@ import java.util.*;
  */
 public class StudentsGUI extends TemplateGUI {
 
-//    private  List<Group> groups;  // список групп
+    //    private  List<Group> groups;  // список групп
     private StudentsTableModel stm; // = new StudentsTableModel(); // = new StudentsTableModel();
     private JScrollPane scrollPaneStudents = null;
     private JTable table; //=  new JTable(stm);
@@ -31,7 +30,7 @@ public class StudentsGUI extends TemplateGUI {
     private JButton btOk = new JButton("Сохранить");
     private JButton btCancel = new JButton("Отменить");
     private Integer editingStudentId = null;
-    private IoInterface io ;
+//    private IoInterface io ;
 
 /*
     public StudentsGUI() {
@@ -43,7 +42,7 @@ public class StudentsGUI extends TemplateGUI {
 
     public StudentsGUI(StudentsTableModel stm) {
         this.stm = stm;
-        io = new IoXML(stm.getAdminInterface());
+//        io = new IoXML(stm.getAdminInterface());
         initStudents();
     }
 
@@ -51,7 +50,7 @@ public class StudentsGUI extends TemplateGUI {
     private void initStudents() {
         super.frame.setTitle("Студенты");
 
-        table =  new JTable(stm);
+        table = new JTable(stm);
         scrollPaneStudents = new JScrollPane(table);
 
         frame.add(scrollPaneStudents, new GridBagConstraints(0, 0, 3, 1, 1, 1,  // добавляем панель с областью прокрутки ( с таблицей внутри) на форму
@@ -77,14 +76,17 @@ public class StudentsGUI extends TemplateGUI {
         stm.addData(new Student(2, "Арбузов А.А.", new Date(), 1));
         stm.addData(new Student(3, "Барабанов Б.Б.", new Date(), 1));
         stm.addData(new Student(1, "Виноградов В.В.", new Date(), 2));
+        stm.sortStudentsByName();
         setDataState(DS_BROWSE);
         frame.setVisible(true);
 
-        if(stm.getRowCount()>0) {table.setRowSelectionInterval(0,0);}  // выделить 1-ю строку грида
+        if (stm.getRowCount() > 0) {
+            table.setRowSelectionInterval(0, 0);
+        }  // выделить 1-ю строку грида
     }
 
     @Override
-    protected void onAddClick(){
+    protected void onAddClick() {
 //        System.out.println("AddClick ");
         setDataState(DS_ADD);
         super.onAddClick();
@@ -93,12 +95,12 @@ public class StudentsGUI extends TemplateGUI {
 //        stm.fireTableDataChanged();  // перерисовать таблицу
         System.out.println("AddClick " + stm.getRowCount());
 
-        edEnrollmentDate.setText( Util.dat2Str(new Date()));
+        edEnrollmentDate.setText(Util.dat2Str(new Date()));
         editingStudentId = null;
     }
 
     @Override
-    protected void onEditClick(){
+    protected void onEditClick() {
 //        System.out.println("EditStudent_Click");
         int row = table.getSelectedRow();
         if (row == -1) {
@@ -107,30 +109,31 @@ public class StudentsGUI extends TemplateGUI {
         }
         setDataState(DS_EDIT);
         System.out.println("table.getSelectedRow() " + table.getSelectedRow());
-        edFIO.setText((String)stm.getValueAt(row, 1));
-        edEnrollmentDate.setText((String)stm.getValueAt(row, 2));
-        edGroup.setText((String)stm.getValueAt(row, 3));
-        editingStudentId = (Integer)stm.getValueAt(row, 0);
+        edFIO.setText((String) stm.getValueAt(row, 1));
+        edEnrollmentDate.setText((String) stm.getValueAt(row, 2));
+        edGroup.setText((String) stm.getValueAt(row, 3));
+        editingStudentId = (Integer) stm.getValueAt(row, 0);
     }
 
     @Override
-    protected void onDelClick(){
+    protected void onDelClick() {
 //        System.out.println("DelClick");
         int row = table.getSelectedRow();
         if (row == -1) {
             Util.showMessage("Не выбрана строка для удаления.");
             return;
         }
-        boolean answYes  = Util.showYesNoMessage("Точно удалить студента?");
-        if (answYes){
-            int id4del = (Integer)stm.getValueAt(row, 0);
-            io.deleteStudent(id4del);
+        boolean answYes = Util.showYesNoMessage("Точно удалить студента?");
+        if (answYes) {
+            int id4del = (Integer) stm.getValueAt(row, 0);
+            stm.deleteStudent(id4del);
         }
     }
 
     @Override
-    protected void onSelectClick(){
+    protected void onSelectClick() {
         System.out.println("SelectClick " + stm.getRowCount());
+        stm.selectStudents(new Student(null,null,null,null));
     }
 
 

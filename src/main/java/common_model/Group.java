@@ -8,14 +8,15 @@ import javax.xml.bind.annotation.XmlType;
  * Groups of students
  */
 @XmlRootElement(name = "group")
-@XmlType(propOrder = {"id","name","facultyName"})
+@XmlType(propOrder = {"id", "name", "facultyName"})
 public class Group {
 
     private Integer id;
     private String name;
     private String facultyName;
 
-    public Group(){}
+    public Group() {
+    }
 
 
     public Group(String name, String facultyName) {

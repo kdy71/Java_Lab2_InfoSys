@@ -3,31 +3,31 @@
     <student>
         <id>1</id>
         <name>Ivan</name>
-        <group>A-1</group>
-        <enrollmentDate>1.08.2000</enrollmentDate>
+        <groupId>1</groupId>
+        <enrollmentDate>1970-01-01 02:00:00</enrollmentDate>
     </student>
     <student>
         <id>2</id>
         <name>Petr</name>
-        <group>B-1</group>
-        <enrollmentDate>1.08.2002</enrollmentDate>
+        <groupId>1</groupId>
+        <enrollmentDate>1970-01-01 02:00:00</enrollmentDate>
     </student>
 <student>
 <id>2</id>
 <name>Ivanov</name>
-<group>1</group>
-<enrollmentDate>Thu Jan 01 02:00:00 EET 1970</enrollmentDate>
+<groupId>1</groupId>
+<enrollmentDate>1970-01-01 02:00:00</enrollmentDate>
 </student>
 <student>
 <id>3</id>
 <name>Ivanov</name>
-<group>1</group>
-<enrollmentDate>Thu Jan 01 02:00:00 EET 1970</enrollmentDate>
+<groupId>1</groupId>
+<enrollmentDate>1970-01-01 02:00:00</enrollmentDate>
 </student>
 <student>
 <id>4</id>
 <name>Ivanov</name>
-<group>1</group>
-<enrollmentDate>Thu Jan 01 02:00:00 EET 1970</enrollmentDate>
+<groupId>1</groupId>
+<enrollmentDate>1970-01-01 02:00:00</enrollmentDate>
 </student>
 </students>

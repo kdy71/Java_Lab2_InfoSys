@@ -27,11 +27,7 @@ public class ClientEar implements Runnable {
         this.serverPort = serverPort;
     }
 
-/*
-    public ClientEar() {
-        super();
-    }
-*/
+
     public ClientEar(InputStream is, Main_Client mainClient) {
         this.is = is;
         this.mainClient = mainClient;
@@ -43,7 +39,7 @@ public class ClientEar implements Runnable {
         this.mainClient = mainClient;
     }
 
-    public void setInputStream(InputStream is) { this.is = is;}
+//    public void setInputStream(InputStream is) { this.is = is;}
 
 
     public void run() {
@@ -54,34 +50,20 @@ public class ClientEar implements Runnable {
             System.out.println("dis==null!" + dis);  // debug
         }
         System.out.println("dis= " + dis);  // debug
-/*
-        try {
-            InputStreamReader isr = new InputStreamReader(socket.getInputStream(),"UTF8");//входящий поток данных
-            ObjectInputStream ois = new ObjectInputStream(is);
-            try {
-                String st = (String)ois.readObject();
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        */
-
-        int i;
         while (true) {
 
             try {
-                System.out.println("dis2= " + dis);  // debug
-                stXML = dis.readUTF(); // ждем пока сервер отошлет строку
-                mainClient.stringXML_2Obj(stXML);
-//                i = is.read();
-//                i = dis.read();
-//                System.out.println("stXML= " + stXML);
-//                System.out.println("i= " + i);  // debug
+//                System.out.println("dis2= " + dis);  // debug
+//                stXML = dis.readUTF(); // ждем пока сервер отошлет строку
+                System.out.println("----- ClientEar - жду сообщения с сервера...");
+                stXML = readStringFromServer(is);
+                System.out.println("----- ClientEar. from srv stXML= " + stXML);  // debug
+//                if ( !stXML.equals("")) {
+                    mainClient.stringXML_2Obj(stXML);
+//                }
 
             } catch (IOException e) {
-                System.out.println("stXML= " + stXML);  // debug
+                System.out.println("ClientEar.  error stXML= " + stXML);  // debug
                 e.printStackTrace();
                 // log4j
             }
@@ -96,5 +78,17 @@ public class ClientEar implements Runnable {
         }
 
     }
+
+    //    public String readStringFromServer() throws IOException {
+    public String readStringFromServer(InputStream is) throws IOException {
+        int ch = is.read();
+        String message = "";
+        while (ch >= 0 && ch != '\r') {
+            message += (char) ch;
+            ch = is.read();
+        }
+        return message;
+    }
+
 
 }

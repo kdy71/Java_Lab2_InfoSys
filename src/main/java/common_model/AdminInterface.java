@@ -51,5 +51,11 @@ public interface AdminInterface {
 
     public void replaceAllGroups(List<Group> newGroups);
 
+    public void sortStudentsById();
+
+    public void sortStudentsByName();
+
 }
+
+
 

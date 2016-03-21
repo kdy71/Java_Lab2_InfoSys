@@ -6,7 +6,7 @@ import java.io.OutputStream;
 import java.net.Socket;
 
 /**
- * Created by itps13 on 19.02.2016.
+ * Created by khoruzh on 19.02.2016.
  */
 
 
@@ -16,6 +16,7 @@ public class ClientThread implements Runnable {
     private InputStream is = null;
     private OutputStream os = null;
     String message = "";
+    String returnedMessage = "";
 
 
     ClientThread(Socket socket, int num) {//конструктор,в который мы передаем
@@ -34,30 +35,20 @@ public class ClientThread implements Runnable {
         //пока сокет "жив"
         while (socket != null) {
             try {
-                //получить сообщение, создать документ, вытянуть root элемент
-                //Если студент или группа, то создать и дописать новый элемент
-
+                System.out.println("waiting for client message... "); //debug
                 message = readStringFromClient();
-                System.out.println("Server have received this message from client: " + message); //debug
-
-                XmlServerOperations.makeAction(message);
-
-                //Document document = XmlServerOperations.getDocumentFromString(message); //cоздаем Документ
-
-                //Object newObject = XmlServerOperations.unmarshalObject(document);//создаем объект
-
-                //XmlServerOperations.addObjectToXmlFile(newObject, document);
-
-         //       break; //после операций с объектом выход
-
-                // **********************
+                System.out.println("--------------------------------------------- "); //debug
+                System.out.println("Server have received this message from client: \n" + message); //debug
+                System.out.println("--------------------------------------------- "); //debug
                 // EXECUTING CLIENT QUERY   // обрабатываем запрос клиента
-                // *********************
+                returnedMessage = XmlServerOperations.makeAction(message);
+                if (! returnedMessage.equals("")) {
+                    writeStringToClient(returnedMessage);
+                }
 
-            } catch (IOException ex) {
-                System.out.println("Error initialization clients streams:  " + ex.getMessage());
-                break;
-            } finally {//при закрытии сокета
+            }
+            catch (IOException ex) {
+                // Если мы сюда попали - значит, клиент отключился. Надо всё закрывать и завершать поток.
                 try {
                     if (is != null) {
                         is.close();
@@ -68,15 +59,23 @@ public class ClientThread implements Runnable {
                     if (socket != null) {
                         socket.close();
                     }
-                    System.out.println("Client disconnect ok");
-
-
-                } catch (IOException ex) {
-                    System.out.println("Client thread error:  " + ex.getMessage());
+                    System.out.println("Client disconnect ok");  // debug
+                    break;
+                } catch (IOException ex2) {
+                    System.out.println("Client thread error:  " + ex2.getMessage());
+                    break;
                 }
             }
         }
     }
+
+
+
+
+
+
+
+
 
     private String readStringFromClient() throws IOException {
         int ch = is.read();
@@ -86,6 +85,17 @@ public class ClientThread implements Runnable {
             ch = is.read();
         }
         return message;
+    }
+
+    private void writeStringToClient(String message) throws IOException {
+        if (message != null) {
+            System.out.println("---- ClientThread.writeStringToClient посылаю сообщение на клиента(OutputStream): "+message); // debug
+            for (int j = 0; j < message.length(); j++) {
+                os.write((byte) message.charAt(j));
+            }
+            os.write('\r');
+            os.flush();
+        }
     }
 
 }

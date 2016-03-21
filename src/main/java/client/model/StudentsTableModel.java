@@ -5,7 +5,6 @@ import common_model.Group;
 import common_model.Student;
 import common_model.Util;
 
-import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
 import java.text.ParseException;
 import java.util.*;
@@ -18,19 +17,22 @@ public class StudentsTableModel extends AbstractTableModel {
     private static final long serialVersionUID = 1000L;
     private int columnCount = 4;
     private AdminInterface admin;
-    private IoInterface io = new IoXML(admin);
+    private IoInterface io; // = new IoXML(admin);
     private Student searchTemplate = new Student(null, null, null, null);
 
 
-    public StudentsTableModel(AdminInterface admin) {  // constructor
+    public StudentsTableModel(AdminInterface admin, IoInterface io) {  // constructor
         super();
         this.admin = admin;
+        this.io = io;
         io.selectStudents(searchTemplate);   // запрос серверу на получение списка  студентов
-        System.out.println("stm constructor. adm.getAllStudents().size()= "+admin.getAllStudents().size());  // debug
+//        admin.sortStudentsByName();
+        System.out.println("stm constructor. adm.getAllStudents().size()= " + admin.getAllStudents().size());  // debug
     }
 
-    public AdminInterface getAdminInterface(){ return admin;}
-
+    public AdminInterface getAdminInterface() {
+        return admin;
+    }
 
 
     @Override
@@ -55,9 +57,9 @@ public class StudentsTableModel extends AbstractTableModel {
 //            if    (currStudent.getId() == null)    return "";
 //            else                                   return  Integer.valueOf (currStudent.getId());
         }
-        if (columnIndex==1) return  currStudent.getName();
-        if (columnIndex==2) return Util.dat2Str(currStudent.getEnrollmentDate());
-        if (columnIndex==3) return admin.getGroupNameById(currStudent.getGroupId()); // currStudent.getGroup();
+        if (columnIndex == 1) return currStudent.getName();
+        if (columnIndex == 2) return Util.dat2Str(currStudent.getEnrollmentDate());
+        if (columnIndex == 3) return admin.getGroupNameById(currStudent.getGroupId()); // currStudent.getGroup();
         return "???";
     }
 
@@ -65,29 +67,32 @@ public class StudentsTableModel extends AbstractTableModel {
      * Дополнительно переопределим метод, возвращающий имена столбцов.
      */
     @Override
-    public  String getColumnName(int columnIndex) {
-        switch(columnIndex) {
-            case 0: return "id";
-            case 1: return " ФИО ";
-            case 2: return "Дата приёма";
-            case 3: return "Группа";
+    public String getColumnName(int columnIndex) {
+        switch (columnIndex) {
+            case 0:
+                return "id";
+            case 1:
+                return " ФИО ";
+            case 2:
+                return "Дата приёма";
+            case 3:
+                return "Группа";
         }
         return "";
     }
 
 
-    public void addData (Student student) {
+    public void addData(Student student) {
 //        studentsList.add(student);
         admin.addStudent(student);
     }
 
 
     /**
-     *
-     * @param fio      - entered student's FIO
-     * @param stDateIn - entered student's DateIn
+     * @param fio         - entered student's FIO
+     * @param stDateIn    - entered student's DateIn
      * @param stGroupName - entered student's GroupName
-     * @return  True - if all data are correct, new student created and saved
+     * @return True - if all data are correct, new student created and saved
      */
     public Student checkAndSaveStudent(Integer id, String fio, String stDateIn, String stGroupName) {
 //    public boolean checkAndSaveStudent(String fio, String stDateIn, String stGroupName) {
@@ -102,7 +107,7 @@ public class StudentsTableModel extends AbstractTableModel {
         }
         Group group = admin.getGroupByName(stGroupName);
         if (group == null) {
-            Util.showError("Нет такой группы - "+stGroupName);
+            Util.showError("Нет такой группы - " + stGroupName);
             return null;
         }
 
@@ -110,17 +115,17 @@ public class StudentsTableModel extends AbstractTableModel {
             Student newStudent = new Student(id, fio, dateIn, group.getId());
             io.saveStudent(newStudent);
             return newStudent;
-        }
-        catch (Exception e) {
-            Util.showError("Упс...  Что-то пошло не так.  "+e.getMessage());
+        } catch (Exception e) {
+            Util.showError("Упс...  Что-то пошло не так.  " + e.getMessage());
             // Log4j .....
             return null;
         }
     }
 
 
-    public void refreshGrid(){
+    public void refreshGrid() {
         fireTableDataChanged();
+        sortStudentsByName();
     }
 
 
@@ -130,43 +135,26 @@ public class StudentsTableModel extends AbstractTableModel {
 
     /**
      * Установка шаблона поиска + запрос серверу на select
+     *
      * @param searchTemplate - шаблон поиска
      */
-    public void setSearchTemplate(Student searchTemplate) {
+    public void selectStudents(Student searchTemplate) {
         this.searchTemplate = searchTemplate;
         io.selectStudents(searchTemplate);
     }
 
 
-
-    public void sortById() {
-         admin.getAllStudents().sort(new ComparatorById());
-    };
-
-
-    public void sortByName() {
-        admin.getAllStudents().sort(new ComparatorByFio());
-    };
-
-
-    public class ComparatorById implements Comparator<Student> {
-        @Override
-        public int compare(Student o1, Student o2) {
-            Integer id1 = o1.getId();
-            Integer id2 = o2.getId();
-            return (id1.compareTo(id2));
-        }
+    public void sortStudentsByName() {
+        admin.sortStudentsByName();
     }
 
-    public class ComparatorByFio implements Comparator<Student> {
-        @Override
-        public int compare(Student o1, Student o2) {
-            String fio1 = o1.getName();
-            String fio2 = o2.getName();
-            return (fio1.compareTo(fio2));
-        }
+    public void sortStudentsById() {
+        admin.sortStudentsById();
     }
 
+    public void deleteStudent(Integer id4del) {
+        io.deleteStudent(id4del);
+    }
 
- }
+}
 

@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public class Util {
 
-    public static final SimpleDateFormat sdf_eng_ms  = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+    public static final SimpleDateFormat sdf_eng_ms = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
     public static final SimpleDateFormat sdf_eng_sec = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     public static final SimpleDateFormat sdf_rus_sec = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
     public static final SimpleDateFormat sdf_rus_day = new SimpleDateFormat("dd.MM.yyyy");
@@ -205,13 +205,14 @@ public class Util {
 
 
     /**
-     *  Convert string (dd.MM.yyyy) to date
+     * Convert string (dd.MM.yyyy) to date
+     *
      * @param stDate
      * @return Date from String
      * @throws ParseException
      */
     public static Date str2Date(String stDate) throws ParseException {
-        return  sdf_rus_day.parse(stDate);
+        return sdf_rus_day.parse(stDate);
     }
 
 
@@ -225,13 +226,12 @@ public class Util {
                 JOptionPane.INFORMATION_MESSAGE);
     }
 
-
     public static boolean showYesNoMessage(String message) {
-        Object[] options = { "Да", "Нет!" };
-        int n = JOptionPane.showOptionDialog(new JFrame(), message ,
+        Object[] options = {"Да", "Нет!"};
+        int n = JOptionPane.showOptionDialog(new JFrame(), message,
                 "Подтверждение", JOptionPane.YES_NO_OPTION,
                 JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
-        return (n==0);
+        return (n == 0);
     }
 
 }

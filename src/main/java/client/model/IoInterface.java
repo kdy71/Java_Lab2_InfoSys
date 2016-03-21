@@ -12,9 +12,9 @@ import java.util.List;
  */
 public interface IoInterface {
 
-    public void saveStudent (Student student) throws JAXBException, ParserConfigurationException;
+    public void saveStudent(Student student) throws JAXBException, ParserConfigurationException;
 
-    public void saveGroup (Group group);
+    public void saveGroup(Group group);
 
     public void deleteStudent(int id4Del);
 
@@ -23,6 +23,7 @@ public interface IoInterface {
     /**
      * Посылает на сервер запрос на выборку групп
      * Параметр - шаблон для условий выборки по атрибутам (если атрибут != null - значит по нему будет фильтр)
+     *
      * @param templateGroup
      * @return
      */
@@ -32,6 +33,7 @@ public interface IoInterface {
     /**
      * Посылает на сервер запрос на выборку студентов
      * Параметр - шаблон для условий выборки по атрибутам (если атрибут != null - значит по нему будет фильтр)
+     *
      * @param templateStudent
      * @return
      */

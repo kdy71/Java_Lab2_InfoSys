@@ -1,15 +1,16 @@
 package common_model;
 
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.*;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.util.Date;
 
 /**
  * Created by Dmitry Khoruzhenko, Oleksandr Dudkin on 15.02.2016.
  * Students
  */
-@XmlRootElement (name = "student")
-@XmlType(propOrder = {"id","name","groupId", "enrollmentDate"})
+@XmlAccessorType(XmlAccessType.NONE)
+@XmlRootElement(name = "student")
+@XmlType(propOrder = {"id", "name", "groupId", "enrollmentDate"})
 public class Student {
 
     private Integer id = null;
@@ -24,7 +25,7 @@ public class Student {
     public Student(String name) {
         this.name = name;
     }
-    
+
     public Student(String name, Date enrollmentDate, int groupId) {
         this.name = name;
         this.enrollmentDate = enrollmentDate;
@@ -48,7 +49,7 @@ public class Student {
     }
 */
 
-    //@XmlElement
+    @XmlElement
     public void setId(Integer id) {
         this.id = id;
     }
@@ -57,7 +58,7 @@ public class Student {
         return id;
     }
 
-    //@XmlElement
+    @XmlElement
     public void setName(String name) {
         this.name = name;
     }
@@ -66,6 +67,7 @@ public class Student {
         return name;
     }
 
+    @XmlElement
     public void setGroupId(Integer groupId) {
         this.groupId = groupId;
     }
@@ -74,6 +76,8 @@ public class Student {
         return groupId;
     }
 
+    @XmlElement(name = "enrollmentDate", required = true)
+    @XmlJavaTypeAdapter(DateAdapter.class)
     public void setEnrollmentDate(Date enrollmentDate) {
         if (this.enrollmentDate == null) {
             this.enrollmentDate = enrollmentDate;

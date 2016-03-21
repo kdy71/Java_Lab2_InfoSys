@@ -1,16 +1,13 @@
 package client.view;
 
-import client.model.IoInterface;
-import client.model.IoXML;
-import common_model.Group;
 import client.model.GroupsTableModel;
+import common_model.Group;
 import common_model.Util;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.*;
 
 /**
  * Created by Dmitry Khoruzhenko on 27.02.2016.
@@ -18,7 +15,7 @@ import java.util.*;
  */
 //public class GroupsGUI {
 public class GroupsGUI extends TemplateGUI {
-//    protected JFrame frame = new JFrame("Группы"); ;
+    //    protected JFrame frame = new JFrame("Группы"); ;
     private GroupsTableModel gtm; // = new GroupsTableModel();
     protected JTable table; // = new JTable(gtm);
     private JScrollPane scrollPaneGroups; // = new JScrollPane(table);
@@ -29,8 +26,8 @@ public class GroupsGUI extends TemplateGUI {
     private JTextField edFaculty = new JTextField(10);
     private JButton btOk = new JButton("Сохранить");
     private JButton btCancel = new JButton("Отменить");
-    private  Integer editingGroupId = null;
-    private IoInterface io ;
+    private Integer editingGroupId = null;
+//    private IoInterface io ;
 
 
     public GroupsGUI(GroupsTableModel gtm) {
@@ -38,16 +35,16 @@ public class GroupsGUI extends TemplateGUI {
 //        System.out.println("constructor GroupsGUI() "); // debug
         this.gtm = gtm;
         initGroups();
-        io = new IoXML(gtm.getAdminInterface());
+//        io = new IoXML(gtm.getAdminInterface());
     }
 
-    private void initGroups(){
+    private void initGroups() {
         frame.setTitle("Группы");
         frame.setLocation(10, 100);
         frame.setSize(440, 300);
         table = new JTable(gtm);
         scrollPaneGroups = new JScrollPane(table);
-        panelEdit.setLayout(new GridLayout(3,2));
+        panelEdit.setLayout(new GridLayout(3, 2));
 
 //        frame.add(panelDataGrid, new GridBagConstraints(0, 0, 3, 1, 1, 1,  // добавляем панель с областью прокрутки ( с таблицей внутри) на форму
         frame.add(scrollPaneGroups, new GridBagConstraints(0, 0, 3, 1, 1, 1,  // добавляем панель с областью прокрутки ( с таблицей внутри) на форму
@@ -72,11 +69,13 @@ public class GroupsGUI extends TemplateGUI {
         gtm.addData(new Group(3, "группа 3", "факультет №2"));
 
         frame.setVisible(true);
-        if(gtm.getRowCount()>0) {table.setRowSelectionInterval(0,0);}  // выделить 1-ю строку грида
+        if (gtm.getRowCount() > 0) {
+            table.setRowSelectionInterval(0, 0);
+        }  // выделить 1-ю строку грида
     }
 
 
-    protected void onAddClick(){
+    protected void onAddClick() {
 //        Group group1 = new Group( "aaa", "факультет №2");
 //        gtm.addData(group1);
 //        gtm.fireTableDataChanged();
@@ -85,7 +84,7 @@ public class GroupsGUI extends TemplateGUI {
         System.out.println("AddClick " + gtm.getRowCount());
     }
 
-    protected void onEditClick(){
+    protected void onEditClick() {
 //        System.out.println("EditClick");
         int row = table.getSelectedRow();
         if (row == -1) {
@@ -93,29 +92,30 @@ public class GroupsGUI extends TemplateGUI {
             return;
         }
         setDataState(DS_EDIT);
-        edGrName.setText((String)gtm.getValueAt(row, 1));
-        edFaculty.setText((String)gtm.getValueAt(row, 2));
-        editingGroupId = (Integer)gtm.getValueAt(row, 0);
+        edGrName.setText((String) gtm.getValueAt(row, 1));
+        edFaculty.setText((String) gtm.getValueAt(row, 2));
+        editingGroupId = (Integer) gtm.getValueAt(row, 0);
 //        System.out.println("table.getSelectedRow() " + table.getSelectedRow()); // debug
     }
 
 
-    protected void onDelClick(){
+    protected void onDelClick() {
 //        System.out.println("DelClick");
         int row = table.getSelectedRow();
         if (row == -1) {
             Util.showMessage("Не выбрана строка для удаления.");
             return;
         }
-        boolean answYes  = Util.showYesNoMessage("Точно удалить группу?");
-        if (answYes){
-            int id4del = (Integer)gtm.getValueAt(row, 0);
-            io.deleteGroup(id4del);
+        boolean answYes = Util.showYesNoMessage("Точно удалить группу?");
+        if (answYes) {
+            int id4del = (Integer) gtm.getValueAt(row, 0);
+            gtm.deleteGroup(id4del);
         }
     }
 
-    protected void onSelectClick(){
+    protected void onSelectClick() {
         System.out.println("SelectClick");
+        gtm.selectGroups(new Group(null, null, null));
     }
 
 

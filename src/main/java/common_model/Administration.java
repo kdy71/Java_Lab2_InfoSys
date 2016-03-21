@@ -1,6 +1,7 @@
 package common_model;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -19,7 +20,7 @@ public class Administration implements AdminInterface {
     }
 
     public Administration() {
-        this.groups =  new ArrayList();
+        this.groups = new ArrayList();
         this.students = new ArrayList<Student>();
     }
 
@@ -120,7 +121,7 @@ public class Administration implements AdminInterface {
 
     public Group getGroupById(Integer id) {
         for (Group currGroup : groups) {
-            if (currGroup.getId() != null  && currGroup.getId().equals(id)) {
+            if (currGroup.getId() != null && currGroup.getId().equals(id)) {
                 return currGroup;
             }
         }
@@ -129,9 +130,11 @@ public class Administration implements AdminInterface {
 
 
     public String getGroupNameById(Integer id) {
-        if (id == null) {return "";}
+        if (id == null) {
+            return "";
+        }
         for (Group currGroup : groups) {
-            if (currGroup.getId() != null  &&  currGroup.getId().equals(id)) {
+            if (currGroup.getId() != null && currGroup.getId().equals(id)) {
                 return currGroup.getName();
             }
         }
@@ -152,7 +155,9 @@ public class Administration implements AdminInterface {
 
     public Student getStudentById(Integer id) {
         for (Student currStudent : students) {
-            if (currStudent.getId().equals(id)) {return currStudent;}
+            if (currStudent.getId().equals(id)) {
+                return currStudent;
+            }
         }
         return null;
     }
@@ -185,6 +190,34 @@ public class Administration implements AdminInterface {
     @Override
     public void replaceAllGroups(List<Group> newGroups) {
         groups = newGroups;
+    }
+
+    public void sortStudentsById() {
+        getAllStudents().sort(new ComparatorStudentsById());
+    }
+
+    public void sortStudentsByName() {
+//        admin.getAllStudents().sort(new ComparatorByFio());
+//        replaceAllStudents( students.sort(new ComparatorStudentsByFio()));
+          students.sort(new ComparatorStudentsByFio());
+    }
+
+    public class ComparatorStudentsById implements Comparator<Student> {
+        @Override
+        public int compare(Student o1, Student o2) {
+            Integer id1 = o1.getId();
+            Integer id2 = o2.getId();
+            return (id1.compareTo(id2));
+        }
+    }
+
+    public class ComparatorStudentsByFio implements Comparator<Student> {
+        @Override
+        public int compare(Student o1, Student o2) {
+            String fio1 = o1.getName();
+            String fio2 = o2.getName();
+            return (fio1.compareTo(fio2));
+        }
     }
 
 }

@@ -15,12 +15,13 @@ public class GroupsTableModel extends AbstractTableModel {
     private final int columnCount = 3;
 //    private List<Group> groupsList; // = new ArrayList<Group>();  // хранилище данных
     private AdminInterface admin;
-    private IoInterface io = new IoXML(admin);
+    private IoInterface io; // = new IoXML(admin);
     private Group searchTemplate = new Group(null, null, null);
 
-    public GroupsTableModel(AdminInterface admin) {  // constructor
+    public GroupsTableModel(AdminInterface admin, IoInterface io) {  // constructor
         super();
         this.admin = admin;
+        this.io = io;
         io.selectGroups(searchTemplate); // // запрос серверу на получение списка  групп
     }
 
@@ -86,10 +87,15 @@ public class GroupsTableModel extends AbstractTableModel {
      * Установка шаблона поиска + запрос серверу на select
      * @param searchTemplate - шаблон поиска
      */
-    public void setSearchTemplate(Group searchTemplate) {
+    public void selectGroups(Group searchTemplate) {
         this.searchTemplate = searchTemplate;
         io.selectGroups(searchTemplate);
     }
 
+    public void deleteGroup (Integer id4del) {io.deleteGroup(id4del);}
+
+    public void refreshGrid(){
+        fireTableDataChanged();
+    }
 
 }
