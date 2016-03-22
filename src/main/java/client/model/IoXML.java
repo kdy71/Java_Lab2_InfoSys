@@ -7,8 +7,6 @@ import common_model.Util;
 
 import javax.xml.bind.JAXBException;
 import javax.xml.parsers.ParserConfigurationException;
-import java.io.IOException;
-import java.util.List;
 
 //import XmlClientOperations;
 
@@ -37,15 +35,27 @@ public class IoXML implements IoInterface {
      */
     public void saveStudent(Student student) /*throws JAXBException, ParserConfigurationException */ {
         System.out.println("маршализация и отправка на сервер студента " + student);  // debug
-        String stXML = cliOpers.getXmlUpdateObject(student);
-        isClient.writeStringToServer(stXML);
+        //String stXML = cliOpers.getXmlUpdateObject(student);
+        if (student.getId() == null) {
+            String stXML = cliOpers.getXmlCreateObject(student);
+            isClient.writeStringToServer(stXML);
+        } else {
+            String stXML = cliOpers.getXmlUpdateObject(student);
+            isClient.writeStringToServer(stXML);
+        }
     }
 
 
     public void saveGroup(Group group) {
         System.out.println("маршализация и отправка на сервер группы " + group);  // debug
-        String stXML = cliOpers.getXmlUpdateObject(group);
-        isClient.writeStringToServer(stXML);
+        //String stXML = cliOpers.getXmlUpdateObject(group);
+        if (group.getId() == null) {
+            String stXML = cliOpers.getXmlCreateObject(group);
+            isClient.writeStringToServer(stXML);
+        } else {
+            String stXML = cliOpers.getXmlUpdateObject(group);
+            isClient.writeStringToServer(stXML);
+        }
     }
 
 

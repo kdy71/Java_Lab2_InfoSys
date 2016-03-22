@@ -11,18 +11,36 @@
         <facultyName>Gumfac</facultyName>
     </group>
     <group>
-        <id>6</id>
-        <name>E-92</name>
+        <id>3</id>
+        <name>C-3</name>
         <facultyName>Econom</facultyName>
     </group>
     <group>
-        <id>7</id>
-        <name>D-1</name>
+        <id>4</id>
+        <name>D-4</name>
         <facultyName>IT</facultyName>
     </group>
     <group>
         <id>5</id>
-        <name>E-91</name>
+        <name>E-5</name>
         <facultyName>Econom</facultyName>
     </group>
+
+
+
+
+
+
+<group>
+<id>16</id>
+<name>F-6</name>
+<facultyName>Medical</facultyName>
+</group>
+
+
+<group>
+<id>17</id>
+<name>PP2</name>
+<facultyName>IT</facultyName>
+</group>
 </groups>

@@ -23,7 +23,6 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -97,7 +96,7 @@ public class XmlClientOperations {
     }
 
     //cоздание нового объекта, который будет дозаписан на сервере в хмл-файл
-    public static String createObject(Object object) {
+    public static String getXmlCreateObject(Object object) {
         String createdXml = null;
         try {
             createdXml = modifyObject(object, "create");

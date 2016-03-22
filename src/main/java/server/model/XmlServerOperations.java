@@ -24,6 +24,7 @@ import javax.xml.transform.stream.StreamResult;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
+import java.text.SimpleDateFormat;
 
 /**
  * Created by Oleksandr Dudkin on 25.02.2016.
@@ -147,6 +148,9 @@ public class XmlServerOperations {
     //поиск студента
     private static String findStudents(Document document) throws IOException, SAXException, ParserConfigurationException {
         int amountOfNullParameters = countNullParameters(document);
+        if (amountOfNullParameters == 4 ) {
+            return documentToString(getDocumentFromFile(STUDENTS_XML_PATH)); //если пустой запрос, то весь список возвращаем
+        }
 
         //извлекаем параметры из документа объекта
         String id = document.getDocumentElement().getFirstChild().getTextContent();
@@ -155,6 +159,7 @@ public class XmlServerOperations {
                 getNextSibling().getTextContent();
         String enrollmentDate = document.getDocumentElement().getFirstChild().getNextSibling().
                 getNextSibling().getNextSibling().getTextContent();
+
 
         //делаем дом файлa с объектами и дом результатов поиска
         Document documentOfXmlFile = getDocumentFromFile(STUDENTS_XML_PATH);
@@ -172,12 +177,12 @@ public class XmlServerOperations {
                 for (int j = 0; j < nodes.getLength(); j++) { //в цикле выводим содержимое каждого тега внутри группы
                     if (nodes.item(j).getNodeType() == Node.ELEMENT_NODE) {
                         //сравниваем значения и если не выполняется то удаляем из дом (не ищем по ID!!)
-                        if ("name".equals(nodes.item(j).getNodeName())
-                                && name.equals(nodes.item(j).getTextContent())
-                                || "groupId".equals(nodes.item(j).getNodeName())
-                                && groupId.equals(nodes.item(j).getTextContent())
-                                || "enrollmentDate".equals(nodes.item(j).getNodeName())
-                                && enrollmentDate.equals(nodes.item(j).getTextContent())) {
+                        if (("name".equals(nodes.item(j).getNodeName())
+                                && name.equals(nodes.item(j).getTextContent()))
+                                || ("groupId".equals(nodes.item(j).getNodeName())
+                                && groupId.equals(nodes.item(j).getTextContent()))
+                                || ("enrollmentDate".equals(nodes.item(j).getNodeName())
+                                && enrollmentDate.equals(nodes.item(j).getTextContent()))) {
                             countOfMatchings++;
                         }
                     }
@@ -200,7 +205,7 @@ public class XmlServerOperations {
         for (int i = 0; i < items.getLength(); i++) {
             if ("-1".equals(items.item(i).getTextContent()) ||
                     "".equals(items.item(i).getTextContent())
-                    || "1970-01-01T02:00:00+02:00".equalsIgnoreCase(items.item(i).getTextContent())) { //значение для Date(0)
+                    || "1970-01-01 02:00:00".equalsIgnoreCase(items.item(i).getTextContent())) { //значение для Date(0)
                 amountOfNullParameters++;
             }
         }
@@ -219,9 +224,10 @@ public class XmlServerOperations {
     }
 
     //Дозапись в ХМЛ-файл студента
-    private static void addStudentToXmlFile(Student student) throws ParserConfigurationException, IOException, SAXException, TransformerException {
+    public static void addStudentToXmlFile(Student student) throws ParserConfigurationException, IOException, SAXException, TransformerException {
         DocumentBuilder db = null;
         Document document = null;
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
         db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
         document = db.parse(STUDENTS_XML_PATH); //создали документ файла Students
@@ -237,7 +243,8 @@ public class XmlServerOperations {
         Element groupId = document.createElement("groupId");
         groupId.setTextContent(String.valueOf(student.getGroupId()));
         Element enrollmentDate = document.createElement("enrollmentDate");
-        enrollmentDate.setTextContent(String.valueOf(student.getEnrollmentDate()));
+        //enrollmentDate.setTextContent(String.valueOf(student.getEnrollmentDate()));
+        enrollmentDate.setTextContent(dateFormat.format(student.getEnrollmentDate())); //запись даты в нужном формате
 
         elementStudent.appendChild(id);
         elementStudent.appendChild(name);
@@ -247,7 +254,7 @@ public class XmlServerOperations {
         rewriteXmlFile(document, STUDENTS_XML_PATH);
     }
 
-    //Дозапись в ХМЛ-файл группу
+    //Дозапись в ХМЛ-файл группы
     private static void addGroupToXmlFile(Group group) throws ParserConfigurationException, IOException, SAXException, TransformerException {
         DocumentBuilder db = null;
         Document document = null;
@@ -339,7 +346,7 @@ public class XmlServerOperations {
         return DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(filePath);
     }
 
-    //воссоздаем новый объект (студент или группа) и если ID = 0, то сетим уникальный ID
+    //воссоздаем новый объект (студент или группа) и если ID - null, то сетим уникальный ID
     public static Object unmarshalObject(Document document) throws JAXBException, IOException, SAXException, ParserConfigurationException, TransformerException {
         String GROUP_ID_PATH = ".\\src\\main\\java\\server\\model\\resources\\groupId.xml";
         String STUD_ID_PATH = ".\\src\\main\\java\\server\\model\\resources\\studId.xml";
@@ -352,15 +359,17 @@ public class XmlServerOperations {
             JAXBContext jaxbContext = JAXBContext.newInstance(Group.class);
             Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
             object = jaxbUnmarshaller.unmarshal(node);
-            if (((Group) object).getId() != null && ((Group) object).getId() == 0) {
-                ((Group) object).setId(getUniqueId(GROUP_ID_PATH)); //присвоение ID только если он равен 0 - объект новый
+            //if (((Group) object).getId() != null && ((Group) object).getId() == 0) {
+            if (((Group) object).getId() == null) {
+                ((Group) object).setId(getUniqueId(GROUP_ID_PATH)); //присвоение ID только если он равен null - объект новый
             }
         }
         if ("student".equals(document.getDocumentElement().getTagName())) {
             JAXBContext jaxbContext = JAXBContext.newInstance(Student.class);
             Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
             object = jaxbUnmarshaller.unmarshal(node);
-            if (((Student) object).getId() != null && ((Student) object).getId() == 0) {
+            //if (((Student) object).getId() != null && ((Student) object).getId() == 0) {
+            if (((Student) object).getId() == null) {
                 ((Student) object).setId(getUniqueId(STUD_ID_PATH)); //присвоение ID только если он равен 0, т.е. объект новый
             }
         }
