@@ -27,7 +27,7 @@ public interface IoInterface {
      * @param templateGroup
      * @return
      */
-    public List<Group> selectGroups(Group templateGroup);
+    public void selectGroups(Group templateGroup);
 
 
     /**
@@ -37,7 +37,7 @@ public interface IoInterface {
      * @param templateStudent
      * @return
      */
-    public List<Student> selectStudents(Student templateStudent);
+    public void selectStudents(Student templateStudent);
 
 
 }

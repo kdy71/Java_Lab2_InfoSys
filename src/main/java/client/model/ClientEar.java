@@ -1,6 +1,7 @@
 package client.model;
 
 import client.controller.Main_Client;
+import common_model.Util;
 
 import java.io.*;
 import java.net.Socket;
@@ -55,15 +56,15 @@ public class ClientEar implements Runnable {
             try {
 //                System.out.println("dis2= " + dis);  // debug
 //                stXML = dis.readUTF(); // ждем пока сервер отошлет строку
-                System.out.println("----- ClientEar - жду сообщения с сервера...");
+                System.out.println(Util.now2Str()+" ----- ClientEar - жду сообщения с сервера...");
                 stXML = readStringFromServer(is);
-                System.out.println("----- ClientEar. from srv stXML= " + stXML);  // debug
+                System.out.println(Util.now2Str()+" ----- ClientEar. from srv stXML= " + stXML.substring(0,20));  // debug
 //                if ( !stXML.equals("")) {
                     mainClient.stringXML_2Obj(stXML);
 //                }
 
             } catch (IOException e) {
-                System.out.println("ClientEar.  error stXML= " + stXML);  // debug
+                System.out.println(Util.now2Str()+" --- ClientEar.  error stXML= " + stXML.substring(0,20));  // debug
                 e.printStackTrace();
                 // log4j
             }

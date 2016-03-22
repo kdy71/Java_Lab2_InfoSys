@@ -10,19 +10,19 @@
         <name>B-2</name>
         <facultyName>Gumfac</facultyName>
     </group>
-<group>
-<id>5</id>
-<name>E-91</name>
-<facultyName>Econom</facultyName>
-</group>
-<group>
-<id>6</id>
-<name>E-91</name>
-<facultyName>Econom</facultyName>
-</group>
-<group>
-<id>7</id>
-<name>E-91</name>
-<facultyName>Econom</facultyName>
-</group>
+    <group>
+        <id>6</id>
+        <name>E-92</name>
+        <facultyName>Econom</facultyName>
+    </group>
+    <group>
+        <id>7</id>
+        <name>D-1</name>
+        <facultyName>IT</facultyName>
+    </group>
+    <group>
+        <id>5</id>
+        <name>E-91</name>
+        <facultyName>Econom</facultyName>
+    </group>
 </groups>

@@ -72,10 +72,10 @@ public class StudentsGUI extends TemplateGUI {
         btOk.addActionListener(new OkButton_ActionListener());
         btCancel.addActionListener(new CancelButton_ActionListener());
 
-        stm.addData(new Student(111, "Иванов И.И.", new Date(), 0));
-        stm.addData(new Student(2, "Арбузов А.А.", new Date(), 1));
-        stm.addData(new Student(3, "Барабанов Б.Б.", new Date(), 1));
-        stm.addData(new Student(1, "Виноградов В.В.", new Date(), 2));
+//        stm.addData(new Student(111, "Иванов И.И.", new Date(), 0));
+//        stm.addData(new Student(2, "Арбузов А.А.", new Date(), 1));
+//        stm.addData(new Student(3, "Барабанов Б.Б.", new Date(), 1));
+//        stm.addData(new Student(1, "Виноградов В.В.", new Date(), 2));
         stm.sortStudentsByName();
         setDataState(DS_BROWSE);
         frame.setVisible(true);
@@ -127,6 +127,7 @@ public class StudentsGUI extends TemplateGUI {
         if (answYes) {
             int id4del = (Integer) stm.getValueAt(row, 0);
             stm.deleteStudent(id4del);
+            stm.selectStudents(new Student(null,null,null,null));
         }
     }
 
@@ -141,6 +142,7 @@ public class StudentsGUI extends TemplateGUI {
         public void actionPerformed(ActionEvent event) {
 //            Boolean checkOk = stm.checkAndSaveStudent(edFIO.getText(), edEnrollmentDate.getText(), edGroup.getText());
             Student editedStudent = stm.checkAndSaveStudent(editingStudentId, edFIO.getText(), edEnrollmentDate.getText(), edGroup.getText());
+            stm.selectStudents(new Student(null,null,null,null));
             if (editedStudent != null) {
                 setDataState(DS_BROWSE);
             }

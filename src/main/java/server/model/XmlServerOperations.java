@@ -36,6 +36,7 @@ public class XmlServerOperations {
     private static String STUDENTS_XML_PATH = ".\\src\\main\\java\\server\\model\\resources\\students.xml";
     private static String GROUPS_XML_PATH = ".\\src\\main\\java\\server\\model\\resources\\groups.xml";
 
+    // TODO: 22.03.2016 Даты сохраняются в некорректном формате - потом эти записи не читаются!!
     //основной метод. выполняет одно из действий, добавление нового объекта, удаление существующего, обновление существующего
     public static String makeAction(String message) {
         try {
@@ -139,7 +140,7 @@ public class XmlServerOperations {
             }
         }
         documentOfFoundResults = documentOfXmlFile;
-        System.out.println(documentToString(documentOfFoundResults));
+//        System.out.println(documentToString(documentOfFoundResults));  // debug
         return documentToString(documentOfFoundResults);
     }
 

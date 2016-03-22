@@ -63,10 +63,9 @@ public class GroupsGUI extends TemplateGUI {
         btOk.addActionListener(new OkButton_ActionListener());
         btCancel.addActionListener(new CancelButton_ActionListener());
 
-
-        gtm.addData(new Group(1, "ПЭ - 81", "факультет №1"));
-        gtm.addData(new Group(2, "ПЭ - 82", "факультет №1"));
-        gtm.addData(new Group(3, "группа 3", "факультет №2"));
+//        gtm.addData(new Group(1, "ПЭ - 81", "факультет №1")); // debug
+//        gtm.addData(new Group(2, "ПЭ - 82", "факультет №1")); // debug
+//        gtm.addData(new Group(3, "группа 3", "факультет №2")); // debug
 
         frame.setVisible(true);
         if (gtm.getRowCount() > 0) {
@@ -110,6 +109,7 @@ public class GroupsGUI extends TemplateGUI {
         if (answYes) {
             int id4del = (Integer) gtm.getValueAt(row, 0);
             gtm.deleteGroup(id4del);
+            gtm.selectGroups(new Group(null, null, null));
         }
     }
 
@@ -123,6 +123,7 @@ public class GroupsGUI extends TemplateGUI {
         public void actionPerformed(ActionEvent event) {
 
             Group editedGroup = gtm.checkSndSaveGroup(editingGroupId, edGrName.getText(), edFaculty.getText());
+            gtm.selectGroups(new Group(null, null, null));
             if (editedGroup != null) {
                 setDataState(DS_BROWSE);
             }

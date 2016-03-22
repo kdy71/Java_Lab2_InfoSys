@@ -110,7 +110,8 @@ public class XmlClientOperations {
     }
 
     //обновление/перезапись уже существующего на сервере объекта
-    public static String updateObject(Object object) {
+//    public static String updateObject(Object object) {
+    public static String getXmlUpdateObject(Object object) {
         String updatedXml = null;
         try {
             updatedXml = modifyObject(object, "update");
@@ -123,7 +124,7 @@ public class XmlClientOperations {
     }
 
     //удаление существующего на сервере объекта
-    public static String deleteObject(Object object) {
+    public static String getXmlDeleteObject(Object object) {
         String deletedXml = null;
         try {
             deletedXml = modifyObject(object, "delete");

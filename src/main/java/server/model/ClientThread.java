@@ -1,5 +1,7 @@
 package server.model;
 
+import common_model.Util;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -38,7 +40,7 @@ public class ClientThread implements Runnable {
                 System.out.println("waiting for client message... "); //debug
                 message = readStringFromClient();
                 System.out.println("--------------------------------------------- "); //debug
-                System.out.println("Server have received this message from client: \n" + message); //debug
+                System.out.println(Util.now2Str()+" --- Server have received this message from client: \n" + message); //debug
                 System.out.println("--------------------------------------------- "); //debug
                 // EXECUTING CLIENT QUERY   // обрабатываем запрос клиента
                 returnedMessage = XmlServerOperations.makeAction(message);
@@ -59,10 +61,10 @@ public class ClientThread implements Runnable {
                     if (socket != null) {
                         socket.close();
                     }
-                    System.out.println("Client disconnect ok");  // debug
+                    System.out.println(Util.now2Str()+" --- Client disconnect ok");  // debug
                     break;
                 } catch (IOException ex2) {
-                    System.out.println("Client thread error:  " + ex2.getMessage());
+                    System.out.println(Util.now2Str()+" --- Client thread error:  " + ex2.getMessage());
                     break;
                 }
             }
@@ -89,7 +91,7 @@ public class ClientThread implements Runnable {
 
     private void writeStringToClient(String message) throws IOException {
         if (message != null) {
-            System.out.println("---- ClientThread.writeStringToClient посылаю сообщение на клиента(OutputStream): "+message); // debug
+            System.out.println(Util.now2Str()+" ---- ClientThread.writeStringToClient посылаю сообщение на клиента(OutputStream): "+message.substring(0,20)); // debug
             for (int j = 0; j < message.length(); j++) {
                 os.write((byte) message.charAt(j));
             }

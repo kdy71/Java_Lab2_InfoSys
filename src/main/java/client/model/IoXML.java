@@ -37,16 +37,15 @@ public class IoXML implements IoInterface {
      */
     public void saveStudent(Student student) /*throws JAXBException, ParserConfigurationException */ {
         System.out.println("маршализация и отправка на сервер студента " + student);  // debug
-        cliOpers.updateObject(student);
-//        Document docStudentXml = XmlClientOperations.marshalObject(student);
-//        System.out.println("XML: "+docStudentXml);  // debug
-//        System.out.println(" need to  ISClient.writeStringToServer(String message)... ");  // debug
+        String stXML = cliOpers.getXmlUpdateObject(student);
+        isClient.writeStringToServer(stXML);
     }
 
 
     public void saveGroup(Group group) {
         System.out.println("маршализация и отправка на сервер группы " + group);  // debug
-        cliOpers.updateObject(group);
+        String stXML = cliOpers.getXmlUpdateObject(group);
+        isClient.writeStringToServer(stXML);
     }
 
 
@@ -62,7 +61,8 @@ public class IoXML implements IoInterface {
             Util.showError("Не могу удалить - нет студентов с id=" + id4Del);
             return;
         }
-        cliOpers.deleteObject(stud4Del);
+        String stXML = cliOpers.getXmlDeleteObject(stud4Del);
+        isClient.writeStringToServer(stXML);
     }
 
 
@@ -71,35 +71,28 @@ public class IoXML implements IoInterface {
         System.out.println("маршализация и отправка на сервер команды удаления группы id4Del= " + id4Del);  // debug
         Group gr4Del = adm.getGroupById(id4Del);
         System.out.println("удаляемая группа = " + gr4Del);  // debug
-        cliOpers.deleteObject(gr4Del);
+        String stXML = cliOpers.getXmlDeleteObject(gr4Del);
+        isClient.writeStringToServer(stXML);
     }
 
 
-    public List<Group> selectGroups(Group templateGroup) {
+//    public List<Group> selectGroups(Group templateGroup) {
+    public void selectGroups(Group templateGroup) {
         String stXML = XmlClientOperations.findGroups(templateGroup.getId(),
                 templateGroup.getName(), templateGroup.getFacultyName());
         System.out.println("результат запроса групп = " + stXML);  // debug
-        try {
-            isClient.writeStringToServer(stXML);
-        } catch (IOException e) {
-            e.printStackTrace(); // тут его выбрасывать надо!
-        }
-
-        return null;
+        isClient.writeStringToServer(stXML);
+//        return null;
     }
 
-    public List<Student> selectStudents(Student templateStudent) {
+
+//    public List<Student> selectStudents(Student templateStudent) {
+    public void selectStudents(Student templateStudent) {
         String st = XmlClientOperations.findStudents(templateStudent.getId(),
                 templateStudent.getName(), templateStudent.getGroupId(), templateStudent.getEnrollmentDate());
 //        System.out.println("результат запроса студентов = " + st);  // debug
-        try {
-            isClient.writeStringToServer(st);
-        } catch (IOException e) {
-            e.printStackTrace(); // тут его выбрасывать надо!
-        }
-
-
-        return null;
+        isClient.writeStringToServer(st);
+//        return null;
     }
 
 

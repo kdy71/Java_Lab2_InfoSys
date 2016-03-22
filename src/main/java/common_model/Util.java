@@ -15,6 +15,7 @@ public class Util {
 
     public static final SimpleDateFormat sdf_eng_ms = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
     public static final SimpleDateFormat sdf_eng_sec = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    public static final SimpleDateFormat sdf_rus_ms  = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss .SSS");
     public static final SimpleDateFormat sdf_rus_sec = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
     public static final SimpleDateFormat sdf_rus_day = new SimpleDateFormat("dd.MM.yyyy");
 
@@ -201,6 +202,14 @@ public class Util {
             return "null";
         else
             return sdf_rus_day.format(dat1);
+    }
+
+    /**
+     * Возвращает текущее время в строковом виде
+     * @return
+     */
+    public static String now2Str() {
+        return sdf_rus_ms.format(new Date());
     }
 
 

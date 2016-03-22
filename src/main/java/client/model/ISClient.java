@@ -89,14 +89,22 @@ public class ISClient {
 
     }
 
-    public void writeStringToServer(String message) throws IOException {
+//    public void writeStringToServer(String message) throws IOException {
+    public void writeStringToServer(String message)  {
         if (message != null) {
             System.out.println("ISClient.writeStringToServer отправляет сообщ. на сервер (OutputStream) \n"+message); // debug
-            for (int j = 0; j < message.length(); j++) {
-                os.write((byte) message.charAt(j));
+            try {
+                for (int j = 0; j < message.length(); j++) {
+                    os.write((byte) message.charAt(j));
+                }
+                os.write('\r');
+                os.flush();
             }
-            os.write('\r');
-            os.flush();
+            catch ( IOException e) {
+                Util.showError("Ошибка при отправке запроса на сервер. \n"+e.getMessage());
+                e.printStackTrace();  // убрать !!!
+                // TODO: 22.03.2016   Log4j !!!
+            }
 
         }
     }

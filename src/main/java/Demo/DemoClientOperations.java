@@ -35,9 +35,9 @@ public class DemoClientOperations {
         //ISClient client4 = new ISClient(XmlClientOperations.deleteObject(group));
 
         student.setName("Nikolay");
-        ISClient client5 = new ISClient(XmlClientOperations.updateObject(student));
+        ISClient client5 = new ISClient(XmlClientOperations.getXmlUpdateObject(student));
 
         group.setName("E-00");
-        ISClient client6 = new ISClient(XmlClientOperations.updateObject(group));
+        ISClient client6 = new ISClient(XmlClientOperations.getXmlUpdateObject(group));
     }
 }
