@@ -2,10 +2,9 @@ package server.model;
 
 import common_model.Util;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.Socket;
+import java.nio.charset.Charset;
 
 /**
  * Created by khoruzh on 19.02.2016.
@@ -15,8 +14,11 @@ import java.net.Socket;
 public class ClientThread implements Runnable {
     Socket socket;//здесь будем хранить ссылку на наш сокет
     private String myName;
-    private InputStream is = null;
-    private OutputStream os = null;
+//    private InputStream is = null;
+//    private OutputStream os = null;
+    private OutputStreamWriter osw = null;
+    private InputStreamReader isr = null;
+
     String message = "";
     String returnedMessage = "";
 
@@ -28,8 +30,10 @@ public class ClientThread implements Runnable {
 
     public void run() {
         try {
-            is = socket.getInputStream();
-            os = socket.getOutputStream();
+//            is = socket.getInputStream();
+//            os = socket.getOutputStream();
+            isr = new InputStreamReader(socket.getInputStream(), Charset.forName("UTF-8"));
+            osw = new OutputStreamWriter(socket.getOutputStream(), Charset.forName("UTF-8"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -52,11 +56,11 @@ public class ClientThread implements Runnable {
             catch (IOException ex) {
                 // Если мы сюда попали - значит, клиент отключился. Надо всё закрывать и завершать поток.
                 try {
-                    if (is != null) {
-                        is.close();
+                    if (isr != null) {
+                        isr.close();
                     }
-                    if (os != null) {
-                        os.close();
+                    if (osw != null) {
+                        osw.close();
                     }
                     if (socket != null) {
                         socket.close();
@@ -73,18 +77,12 @@ public class ClientThread implements Runnable {
 
 
 
-
-
-
-
-
-
     private String readStringFromClient() throws IOException {
-        int ch = is.read();
+        int ch = isr.read();
         String message = "";
         while (ch >= 0 && ch != '\r') {
             message += (char) ch;
-            ch = is.read();
+            ch = isr.read();
         }
         return message;
     }
@@ -92,11 +90,12 @@ public class ClientThread implements Runnable {
     private void writeStringToClient(String message) throws IOException {
         if (message != null) {
             System.out.println(Util.now2Str()+" ---- ClientThread.writeStringToClient посылаю сообщение на клиента(OutputStream): "+message.substring(0,20)); // debug
-            for (int j = 0; j < message.length(); j++) {
-                os.write((byte) message.charAt(j));
-            }
-            os.write('\r');
-            os.flush();
+/*            for (int j = 0; j < message.length(); j++) {
+                osw.write((byte) message.charAt(j));
+            } */
+            osw.write(message);
+            osw.write('\r');
+            osw.flush();
         }
     }
 

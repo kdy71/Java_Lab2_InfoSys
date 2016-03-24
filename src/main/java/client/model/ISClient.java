@@ -4,6 +4,7 @@ import common_model.Util;
 
 import java.io.*;
 import java.net.Socket;
+import java.nio.charset.Charset;
 
 /**
  * Created by Dmitry Khoruzhenko on 19.02.2016.
@@ -12,15 +13,16 @@ import java.net.Socket;
 public class ISClient {
     private String serverHostName = "localhost";
     private int serverPort = 50001;
-    private String message;
-    private String returnedMessage;
+//    private String message;
+//    private String returnedMessage;
     private InputStream is = null;
-    private OutputStream os = null;
+//    private OutputStream os = null;
+    private OutputStreamWriter osw = null;
     Socket socket = null;
 
     public ISClient(String message) {
         super();
-        this.message = message;
+//        this.message = message;
         startClient();
     }
 
@@ -32,17 +34,13 @@ public class ISClient {
     public InputStream getInputStream() {
         return is;
     }
-
+/*
     public OutputStream getOutputStream() {
         return os;
     }
-
+*/
     public Socket getSocket() {
         return socket;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
     }
 
     private void startClient() {
@@ -55,32 +53,11 @@ public class ISClient {
             System.exit(1);
         }
         try {
-            os = socket.getOutputStream(); //write to socket using ObjectOutputStream
+//            os = socket.getOutputStream(); //write to socket using ObjectOutputStream
+            osw =  new OutputStreamWriter(socket.getOutputStream(), Charset.forName("UTF-8"));
             is = socket.getInputStream();
             System.out.println("Sending request to Socket Server ");
 
-
-            //if (i == 0) {
-//            writeStringToServer(message);
-//            returnedMessage = readStringFromServer();
-            //System.out.println(returnedMessage);
-//            XmlClientOperations.parseServerMessageToObjects(returnedMessage);
-            //}
-
-/*            if (i == 1) {
-                message = "EXIT";
-                writeStringToServer(message);
-            }
-*/
-            System.out.println("socket 1 =" + socket); // debug
-            //os.close();
-            System.out.println("socket 1 =" + socket); // debug
-            try {
-                Thread.sleep(100);
-                System.out.println("socket 3 =" + socket); // debug
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
         } catch (IOException e) {
             System.out.println(e.getMessage());
             e.printStackTrace();
@@ -92,13 +69,20 @@ public class ISClient {
 //    public void writeStringToServer(String message) throws IOException {
     public void writeStringToServer(String message)  {
         if (message != null) {
-            System.out.println("ISClient.writeStringToServer отправляет сообщ. на сервер (OutputStream) \n"+message); // debug
+            System.out.println("-----------------------------) "); // debug
+//            System.out.println("ISClient.writeStringToServer отправляет сообщ. на сервер (OutputStream) \n"+message); // debug
             try {
-                for (int j = 0; j < message.length(); j++) {
-                    os.write((byte) message.charAt(j));
+/*                for (int j = 0; j < message.length(); j++) {
+//                    os.write((byte) message.charAt(j));
+                    osw.write((byte) message.charAt(j));  //  ТУТ ОШИБКА !!!
+                    System.out.println((byte)message.charAt(j)+" ");   // debug
                 }
-                os.write('\r');
-                os.flush();
+                */
+//                os.write('\r');
+//                os.flush();
+                osw.write(message);
+                osw.write('\r');
+                osw.flush();
             }
             catch ( IOException e) {
                 Util.showError("Ошибка при отправке запроса на сервер. \n"+e.getMessage());

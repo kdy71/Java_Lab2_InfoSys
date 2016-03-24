@@ -5,26 +5,14 @@
         <name>A-1</name>
         <facultyName>Engineering</facultyName>
     </group>
-    <group>
-        <id>2</id>
-        <name>B-2</name>
-        <facultyName>Gumfac</facultyName>
-    </group>
-    <group>
-        <id>3</id>
-        <name>C-3</name>
-        <facultyName>Econom</facultyName>
-    </group>
+    
+    
     <group>
         <id>4</id>
         <name>D-4</name>
         <facultyName>IT</facultyName>
     </group>
-    <group>
-        <id>5</id>
-        <name>E-5</name>
-        <facultyName>Econom</facultyName>
-    </group>
+    
 
 
 
@@ -42,5 +30,15 @@
 <id>17</id>
 <name>PP2</name>
 <facultyName>IT</facultyName>
+</group>
+<group>
+<id>3</id>
+<name>C-3</name>
+<facultyName>Экономический</facultyName>
+</group>
+<group>
+<id>2</id>
+<name>B-2</name>
+<facultyName>Журфак</facultyName>
 </group>
 </groups>

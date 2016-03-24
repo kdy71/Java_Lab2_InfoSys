@@ -178,7 +178,6 @@ public class XmlClientOperations {
      * @return
      */
     public static List parseServerMessageToObjects(String messageFromServer) {
-        // TODO: 16.03.2016 Создать из строки XML список студентов или групп
         //создать документ
 //        List foundObjects = new LinkedList();
         List foundObjects = new ArrayList();
@@ -219,10 +218,13 @@ public class XmlClientOperations {
                     }
                 }
             }
-        } catch (JAXBException e) {
-            Util.showError("");
+        }
+        catch (JAXBException | SAXException | ParserConfigurationException | IOException e) {
+            Util.showError("Ошибка при обработке сообщения от сервера.\n"+e.getMessage());
             e.printStackTrace();
-        } catch (SAXException e) {
+            // log4j
+        }
+/*        catch (SAXException e) {
             Util.showError("");
             e.printStackTrace();
         } catch (ParserConfigurationException e) {
@@ -231,10 +233,7 @@ public class XmlClientOperations {
         } catch (IOException e) {
             Util.showError("");
             e.printStackTrace();
-        }
-        // затем admin. replaceAllStudents(List<Student> newStudents)
-        // затем StudentsTableModel. refreshGrid()
-        // вопрос как связать классы
+        }  */
         return foundObjects;
     }
 

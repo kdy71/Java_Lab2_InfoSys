@@ -34,12 +34,13 @@ import java.text.SimpleDateFormat;
  */
 public class XmlServerOperations {
 
-    private static String STUDENTS_XML_PATH = ".\\src\\main\\java\\server\\model\\resources\\students.xml";
-    private static String GROUPS_XML_PATH = ".\\src\\main\\java\\server\\model\\resources\\groups.xml";
+//    private static String STUDENTS_XML_PATH = ".\\src\\main\\java\\server\\model\\resources\\students.xml";
+//    private static String GROUPS_XML_PATH = ".\\src\\main\\java\\server\\model\\resources\\groups.xml";
+    private static String STUDENTS_XML_PATH = ".\\resources\\students.xml";
+    private static String GROUPS_XML_PATH = ".\\resources\\groups.xml";
 
-    // TODO: 22.03.2016 Даты сохраняются в некорректном формате - потом эти записи не читаются!!
     //основной метод. выполняет одно из действий, добавление нового объекта, удаление существующего, обновление существующего
-    public static String makeAction(String message) {
+    public static synchronized String makeAction  (String message) {
         try {
 
             //построить документ из сообщения
@@ -69,10 +70,13 @@ public class XmlServerOperations {
             if ("find".equals(document.getDocumentElement().getLastChild().getTextContent())) {
                 return findObjectsInXmlFile(document);
             }
-        } catch (ParserConfigurationException e) {
-            Util.showError("");
+        }
+        catch (ParserConfigurationException | SAXException | IOException | TransformerException | JAXBException e) {
+            Util.showError("Ошибка при обработке команды от клиента.\n"+e.getMessage());
             e.printStackTrace();
-        } catch (SAXException e) {
+            // log4j
+        }
+/*        catch (SAXException e) {
             Util.showError("");
             e.printStackTrace();
         } catch (IOException e) {
@@ -84,7 +88,7 @@ public class XmlServerOperations {
         } catch (JAXBException e) {
             Util.showError("");
             e.printStackTrace();
-        }
+        } */
         return "";
     }
 
@@ -348,8 +352,10 @@ public class XmlServerOperations {
 
     //воссоздаем новый объект (студент или группа) и если ID - null, то сетим уникальный ID
     public static Object unmarshalObject(Document document) throws JAXBException, IOException, SAXException, ParserConfigurationException, TransformerException {
-        String GROUP_ID_PATH = ".\\src\\main\\java\\server\\model\\resources\\groupId.xml";
-        String STUD_ID_PATH = ".\\src\\main\\java\\server\\model\\resources\\studId.xml";
+//        String GROUP_ID_PATH = ".\\src\\main\\java\\server\\model\\resources\\groupId.xml";
+//        String STUD_ID_PATH = ".\\src\\main\\java\\server\\model\\resources\\studId.xml";
+        String GROUP_ID_PATH = ".\\resources\\groupId.xml";
+        String STUD_ID_PATH  = ".\\resources\\studId.xml";
 
         if (document == null) throw new IllegalArgumentException("Parameter Document is null");
         Node node = document.getDocumentElement();

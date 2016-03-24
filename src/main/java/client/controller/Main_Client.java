@@ -27,15 +27,15 @@ public class Main_Client {
         Main_Client mainClient = new Main_Client();
         mainClient.startMain();
 
-        // TODO: 15.03.2016 Реализовать методы получения данных с сервера (считать, что на сервере всё уже есть.)
-        // TODO: 15.03.2016 Слушать сервер в отдельном потоке? И сразу обновлять данные в гридах??
+        // (ok) Реализовать методы получения данных с сервера (считать, что на сервере всё уже есть.)
+        // (ok) Слушать сервер в отдельном потоке? И сразу обновлять данные в гридах??
         // -- При вставке/редактиров. студ. и гр. хранить поля во спец. буферном объекте. К гриду не обращаться!
         // -- Доделать вызов методов удаления студ/групп.
         // (ok) 15.03.2016 Доделать сортировку студентов
-        // TODO: 15.03.2016 При редактировании студента группу выбирать из списка (не срочно)
+        // TODO: 15.03.2016 При редактировании студента группу выбирать из списка (не срочно. И не обязательно.)
         // TODO: 15.03.2016 При перемещении по гриду с группами менять фильтр на гриде студентов. Слушатель событий-? (не обязательно)
         // TODO: 16.03.2016 Разбить проект на 2 мавен- проекта - клиент и сервер
-        // TODO: 16.03.2016 На сервере обрабатывать отключение клиентов
+        // (ok) На сервере обрабатывать отключение клиентов
     }
 
 
@@ -60,6 +60,7 @@ public class Main_Client {
         StudentsGUI studentsGUI = new StudentsGUI(stm);
         System.out.println(" main adm.getAllStudents().size()= " + admin.getAllStudents().size());  // debug
 
+//        client1.writeStringToServer("test проверка кириллицы");
     }
 
 
@@ -72,10 +73,10 @@ public class Main_Client {
     public void stringXML_2Obj(String stXML) {
 //        Object objMsg =  xmlCliOpers.parseServerMsg_2Obj(stXML);
         Object objMsg = xmlCliOpers.parseServerMessageToObjects(stXML);
-        System.out.println("---Main_Client.objMsg = "+objMsg); // debug
+//        System.out.println("---Main_Client.objMsg = "+objMsg); // debug
         if (objMsg instanceof List) {
             ArrayList list = (ArrayList) objMsg;
-            System.out.println("---Main_Client.objMsg[0] = "+ list.get(0)); // debug
+//            System.out.println("---Main_Client.objMsg[0] = "+ list.get(0)); // debug
             // TODO: 21.03.2016 generic ??? Разобраться с типами !!!
 //            processingSrvMsg(list);
             if (list.get(0) instanceof Group) {processingSrvMsg1(list);}

@@ -5,6 +5,7 @@ import common_model.Util;
 
 import java.io.*;
 import java.net.Socket;
+import java.nio.charset.Charset;
 
 /**
  * "Ухо" клиента.
@@ -15,11 +16,12 @@ public class ClientEar implements Runnable {
     private String serverHostName = "localhost";
     private int serverPort = 50001;
     private String messageFromSrv;
-    private InputStream is = null;
-    private OutputStream os = null;
+//    private InputStream is = null;
+//    private OutputStream os = null;
+    private InputStreamReader isr = null;
     Socket socket = null;
     String stXML = null;
-    DataInputStream dis = null;
+//    DataInputStream dis = null;
     private Main_Client mainClient;
 
 
@@ -30,34 +32,26 @@ public class ClientEar implements Runnable {
 
 
     public ClientEar(InputStream is, Main_Client mainClient) {
-        this.is = is;
+//        this.is = is;
+        this.isr =  new InputStreamReader(is, Charset.forName("UTF-8"));
         this.mainClient = mainClient;
     }
 
     public ClientEar(Socket socket, Main_Client mainClient) throws IOException {
         this.socket = socket;
-        this.is = socket.getInputStream();
+//        this.is = socket.getInputStream();
+        this.isr =  new InputStreamReader(socket.getInputStream(), Charset.forName("UTF-8"));
         this.mainClient = mainClient;
     }
-
-//    public void setInputStream(InputStream is) { this.is = is;}
 
 
     public void run() {
         System.out.println("ClientEar() started ...");  // debug
-        dis = new DataInputStream(is);
-
-        if (dis == null) {
-            System.out.println("dis==null!" + dis);  // debug
-        }
-        System.out.println("dis= " + dis);  // debug
         while (true) {
 
             try {
-//                System.out.println("dis2= " + dis);  // debug
-//                stXML = dis.readUTF(); // ждем пока сервер отошлет строку
                 System.out.println(Util.now2Str()+" ----- ClientEar - жду сообщения с сервера...");
-                stXML = readStringFromServer(is);
+                stXML = readStringFromServer(isr);
                 System.out.println(Util.now2Str()+" ----- ClientEar. from srv stXML= " + stXML.substring(0,20));  // debug
 //                if ( !stXML.equals("")) {
                     mainClient.stringXML_2Obj(stXML);
@@ -68,25 +62,20 @@ public class ClientEar implements Runnable {
                 e.printStackTrace();
                 // log4j
             }
-
-            System.out.print(".");
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-
         }
 
     }
 
     //    public String readStringFromServer() throws IOException {
-    public String readStringFromServer(InputStream is) throws IOException {
-        int ch = is.read();
+//    public String readStringFromServer(InputStream is) throws IOException {
+    public String readStringFromServer(InputStreamReader isr) throws IOException {
+//        int ch = is.read();
+        int ch = isr.read();
         String message = "";
         while (ch >= 0 && ch != '\r') {
             message += (char) ch;
-            ch = is.read();
+//            ch = is.read();
+            ch = isr.read();
         }
         return message;
     }
