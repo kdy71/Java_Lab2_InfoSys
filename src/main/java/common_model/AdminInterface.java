@@ -4,7 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * Created by Oleksandr Dudkin on 29.02.2016.
+ * Created by Oleksandr Dudkin, Dmitry Khoruzhenko on 29.02.2016.
  */
 
 public interface AdminInterface {

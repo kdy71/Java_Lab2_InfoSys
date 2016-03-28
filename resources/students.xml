@@ -1,18 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <students>
-    
-    
-    
-    
-    
-
-
-
-
-
-
-
-
 <student>
 <id>1</id>
 <name>Aleksandr</name>
@@ -20,35 +7,19 @@
 <enrollmentDate>1970-01-01 00:00:00</enrollmentDate>
 </student>
 
-<student>
-<id>5</id>
-<name>Boris</name>
-<groupId>2</groupId>
-<enrollmentDate>1980-01-01 00:00:00</enrollmentDate>
-</student>
+
 <student>
 <id>4</id>
 <name>Dmitriy</name>
 <groupId>4</groupId>
 <enrollmentDate>1980-01-01 00:00:00</enrollmentDate>
 </student>
-
-
-
-
-
-
 <student>
 <id>18</id>
 <name>Ivanov I.I.</name>
 <groupId>17</groupId>
 <enrollmentDate>2016-03-22 00:00:00</enrollmentDate>
 </student>
-
-
-
-
-
 
 <student>
 <id>3</id>
@@ -68,4 +39,5 @@
 <groupId>3</groupId>
 <enrollmentDate>2016-03-24 00:00:00</enrollmentDate>
 </student>
+
 </students>

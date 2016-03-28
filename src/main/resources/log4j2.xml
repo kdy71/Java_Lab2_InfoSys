@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+
+    <Appenders>
+<!--        <File name="file" fileName="app.log">  -->
+        <File name="file" fileName="Lab2.log">
+            <PatternLayout>
+                <Pattern>%d{ISO8601} [%-5p][%-16.16t][%32.32c] - %m%n</Pattern>
+            </PatternLayout>
+        </File>
+        <!--        <Console name="STDOUT" target="SYSTEM_OUT">
+                    <PatternLayout pattern="%m%n"/>
+                </Console>-->
+    </Appenders>
+    <Loggers>
+        <Root level="trace">
+            <AppenderRef ref="file" level="DEBUG"/>
+            <!--
+                        <AppenderRef ref="STDOUT" level="INFO"/>
+            -->
+        </Root>
+    </Loggers>
+</Configuration>
+
+
+
+
+
