@@ -5,7 +5,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- * Created by Oleksandr Dudkin on 20.03.2016.
+ * Created by Dmitry Khoruzhenko, Oleksandr Dudkin on 20.03.2016.
+ * Class contains methods for marshaling/unmarshaling date in suitable format.
  */
 
 public class DateAdapter extends XmlAdapter<String, Date> {

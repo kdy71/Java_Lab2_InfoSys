@@ -7,7 +7,7 @@ import java.util.List;
  * Created by Oleksandr Dudkin, Dmitry Khoruzhenko on 29.02.2016.
  */
 
-public interface AdminInterface {
+public interface AdministrationInterface {
 
     public List<Group> getGroups();
 

@@ -3,12 +3,10 @@ package client.model;
 import common_model.Group;
 import common_model.Student;
 import common_model.Util_msg;
-//import org.apache.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.ls.DOMImplementationLS;
 import org.w3c.dom.ls.LSSerializer;
@@ -28,15 +26,23 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+//import org.apache.log4j.Logger;
+
 /**
- * Created by Oleksandr Dudkin on 25.02.2016.
+ * Created by Dmitry Khoruzhenko, Oleksandr Dudkin on 25.02.2016.
+ * Class contains methods that are working with xml on the client side.
  */
 public class XmlClientOperations {
 
-    //public static final Logger log = Logger.getLogger(XmlClientOperations.class);
     public static final Logger log = LogManager.getLogger(XmlClientOperations.class);
 
-    //сформировать запрос на поиск группы в виде строки из ХМЛ-документа
+    /**
+     * Forms xml-string for request to find group(s) with specified parameters.
+     * @param id    group id
+     * @param name  group name
+     * @param facultyName   faculty name
+     * @return xml recorded as a string
+     */
     public static String findGroups(Integer id, String name, String facultyName) {
         Group group = new Group();
         group.setId(id);
@@ -45,13 +51,13 @@ public class XmlClientOperations {
         String modifiedXml = null;
 
         if (id == null) {
-            group.setId(-1);
-        } //null не вставляется, чтобы был тег, нужно вставить что-то
+            group.setId(-1); //can't set null, so insert int -1
+        }
         if (name == null) {
             group.setName("");
         }
         if (facultyName == null) {
-            group.setFacultyName("");
+            group.setFacultyName(""); //can't set null, so insert ""
         }
 
         try {
@@ -65,7 +71,14 @@ public class XmlClientOperations {
         return modifiedXml;
     }
 
-    //сформировать запрос на поиск студента в виде строки из ХМЛ-документа
+    /**
+     * Forms xml-string for request to find student(s) with specified parameters.
+     * @param id    student id
+     * @param name  student name
+     * @param groupId   id of student group
+     * @param enrollmentDate enrollment date of student
+     * @return xml recorded as a string
+     */
     public static String findStudents(Integer id, String name, Integer groupId, Date enrollmentDate) {
         Student student = new Student();
         student.setId(id);
@@ -75,10 +88,10 @@ public class XmlClientOperations {
         String modifiedXml = null;
 
         if (id == null) {
-            student.setId(-1);
-        } //null не вставляется, чтобы был тег, нужно вставить что-то
+            student.setId(-1); //can't set null, so insert int -1
+        }
         if (name == null) {
-            student.setName("");
+            student.setName(""); //can't set null, so insert ""
         }
         if (groupId == null) {
             student.setGroupId(-1);
@@ -98,7 +111,11 @@ public class XmlClientOperations {
         return modifiedXml;
     }
 
-    //cоздание нового объекта, который будет дозаписан на сервере в хмл-файл
+    /**
+     * Forms xml-string for request to create new object (student or group).
+     * @param object newly created object (Student or Group)
+     * @return xml recorded as a string
+     */
     public static String getXmlCreateObject(Object object) {
         String createdXml = null;
         try {
@@ -112,7 +129,11 @@ public class XmlClientOperations {
         return createdXml;
     }
 
-    //обновление/перезапись уже существующего на сервере объекта
+    /**
+     * Forms xml-string for request to update already existing object (student or group).
+     * @param object updated object (Student or Group)
+     * @return xml recorded as a string
+     */
     public static String getXmlUpdateObject(Object object) {
         String updatedXml = null;
         try {
@@ -126,7 +147,11 @@ public class XmlClientOperations {
         return updatedXml;
     }
 
-    //удаление существующего на сервере объекта
+    /**
+     * Forms xml-string for request to delete already existing object (student or group).
+     * @param object object to delete (Student or Group)
+     * @return xml recorded as a string
+     */
     public static String getXmlDeleteObject(Object object) {
         String deletedXml = null;
         try {
@@ -140,16 +165,29 @@ public class XmlClientOperations {
         return deletedXml;
     }
 
-    //модификация объекта, маршалинг, добавление ноды action, перевод в строку
-    public static String modifyObject(Object object, String actionMessage) throws JAXBException, ParserConfigurationException {
+    /**
+     * Modifies xml description for object by appending node with certain action (create | update | delete).
+     * @param object object (Student or Group)
+     * @param actionMessage action with object
+     * @return modified xml as a string
+     * @throws JAXBException
+     * @throws ParserConfigurationException
+     */
+    private static String modifyObject(Object object, String actionMessage) throws JAXBException, ParserConfigurationException {
         Document document = marshalObject(object);
         addActionNode(document, actionMessage);
         log.info("End of modification.");
         return documentToString(document);
     }
 
-    //маршаллизация объекта в документ
-    public static Document marshalObject(Object object) throws ParserConfigurationException, JAXBException {
+    /**
+     * Marshals object (student or group) to Document.
+     * @param object student or group
+     * @return document of object's xml-description
+     * @throws ParserConfigurationException
+     * @throws JAXBException
+     */
+    private static Document marshalObject(Object object) throws ParserConfigurationException, JAXBException {
         DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
         Document document = docBuilderFactory.newDocumentBuilder().newDocument();
         JAXBContext context = JAXBContext.newInstance(object.getClass());
@@ -160,8 +198,12 @@ public class XmlClientOperations {
         return document;
     }
 
-    //добавление ноды действия
-    public static void addActionNode(Document document, String actionMessage) {
+    /**
+     * Adds to document of object's xml-description new node that contains certain action.
+     * @param document document of object's xml-description
+     * @param actionMessage action with object
+     */
+    private static void addActionNode(Document document, String actionMessage) {
         Element root = document.getDocumentElement();
         Element action = document.createElement("action");
         root.appendChild(action);
@@ -169,8 +211,12 @@ public class XmlClientOperations {
         log.info("Node of action was added. Action: " + actionMessage);
     }
 
-    //перевод хмл-документа в строку
-    public static String documentToString(Document document) {
+    /**
+     * Converts document of object's xml-description to string.
+     * @param document document of object's xml-description
+     * @return xml as a string
+     */
+    private static String documentToString(Document document) {
         DOMImplementationLS domImplementation = (DOMImplementationLS) document.getImplementation();
         LSSerializer lsSerializer = domImplementation.createLSSerializer();
         log.info("Document of object was converted to String.");
@@ -178,51 +224,37 @@ public class XmlClientOperations {
     }
 
     /**
-     * Парсит сообщение с сервера и делает из него объект (список студентов, список групп, команда..? )
-     * Вызывается из  Main_Client.parseServerMessageToObjects()
-     *
-     * @param messageFromServer
-     * @return
+     * Parses xml-string received from server, gets type of objects, create list of received objects.
+     * @param messageFromServer xml-string from server
+     * @return list of objects
+     * @see class Main_Client
      */
     public static List parseServerMessageToObjects(String messageFromServer) {
-        //создать документ
-//        List foundObjects = new LinkedList();
         List foundObjects = new ArrayList();
 
         try {
             Document document = getDocumentFromString(messageFromServer);
 
-            //пропарсить документ, узнать тип объектов
+            // in cycle gets every object and adds to list
             if ("students".equals(document.getDocumentElement().getTagName())) {
-                //в цикле вытащить каждый объект анмаршалингом и добавить в список
-                NodeList items = document.getDocumentElement().getChildNodes(); //cоздаем набор нод
+                NodeList items = document.getDocumentElement().getChildNodes(); //gets set of nodes
                 for (int i = 0; i < items.getLength(); i++) {
-                    if (items.item(i).getNodeName().equals("student")) { //если нода - это студент
-
-                        JAXBContext jaxbContext = null;
-
-                        jaxbContext = JAXBContext.newInstance(Student.class);
+                    if (items.item(i).getNodeName().equals("student")) { //if node is a student
+                        JAXBContext jaxbContext = JAXBContext.newInstance(Student.class);
                         Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
                         Student student = (Student) jaxbUnmarshaller.unmarshal(items.item(i));
-                        //System.out.println(student);
                         foundObjects.add(student);
-                        //log.info("Object Student was added to list.");
                     }
                 }
             }
             if ("groups".equals(document.getDocumentElement().getTagName())) {
-                //в цикле вытащить каждый объект анмаршалингом и добавить в список
-                NodeList items = document.getDocumentElement().getChildNodes(); //cоздаем набор нод
+                NodeList items = document.getDocumentElement().getChildNodes(); //gets set of nodes
                 for (int i = 0; i < items.getLength(); i++) {
-                    if (items.item(i).getNodeName().equals("group")) { //если нода - это студент
-                        JAXBContext jaxbContext = null;
-
-                        jaxbContext = JAXBContext.newInstance(Group.class);
+                    if (items.item(i).getNodeName().equals("group")) { //if node is a group
+                        JAXBContext jaxbContext = JAXBContext.newInstance(Group.class);
                         Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
                         Group group = (Group) jaxbUnmarshaller.unmarshal(items.item(i));
-                        //System.out.println(group);
                         foundObjects.add(group);
-                        //log.info("Object Group was added to list.");
                     }
                 }
             }
@@ -235,38 +267,23 @@ public class XmlClientOperations {
         return foundObjects;
     }
 
-    //получить документ из строки
-    public static Document getDocumentFromString(String message)
+    /**
+     * Creates Document from xml-string received from server.
+     * @param message xml-string received from server
+     * @return document
+     * @throws ParserConfigurationException
+     * @throws IOException
+     * @throws SAXException
+     */
+    private static Document getDocumentFromString(String message)
             throws ParserConfigurationException, IOException, SAXException {
-
-        DocumentBuilder db = null;
-        Document document = null;
-
-        db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+        DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
         InputSource is = new InputSource();
         is.setCharacterStream(new StringReader(message));
-        document = db.parse(is);
+        Document document = db.parse(is);
 
         log.info("CLIENT. Document from string was created.");
         return document;
-    }
-
-    //воссоздаем новый объект
-    public static Object unmarshalObject(Document document) {
-        if (document == null) throw new IllegalArgumentException("Parameter Document is null");
-        Node node = document.getDocumentElement();
-        Object object = null;
-        try {
-            if ("group".equals(document.getDocumentElement().getTagName())) {
-                JAXBContext jaxbContext = JAXBContext.newInstance(Group.class);
-                Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
-                object = jaxbUnmarshaller.unmarshal(node);
-            }
-
-        } catch (JAXBException e) {
-            e.printStackTrace();
-        }
-        return object;
     }
 }
 

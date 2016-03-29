@@ -10,7 +10,7 @@ import java.util.List;
  * Administration of university.
  * Работа с набором групп и набором студентов.
  */
-public class Administration implements AdminInterface {
+public class Administration implements AdministrationInterface {
 
     private List<Group> groups;
     private List<Student> students;

@@ -5,11 +5,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>java.labs.Group5.2</groupId>
-    <artifactId>Lab2_common</artifactId>
+    <artifactId>Lab2_InfoSys</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
-
+    
     <modules>
+        <module>Lab2_common</module>
         <module>Lab2_client</module>
         <module>Lab2_server</module>
     </modules>

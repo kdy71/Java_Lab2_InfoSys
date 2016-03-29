@@ -3,7 +3,7 @@ package client.controller;
 import client.model.*;
 import client.view.GroupsGUI;
 import client.view.StudentsGUI;
-import common_model.AdminInterface;
+import common_model.AdministrationInterface;
 import common_model.Administration;
 import common_model.Group;
 import common_model.Student;
@@ -24,7 +24,7 @@ import java.util.List;
 public class Main_Client {
 
     private XmlClientOperations xmlCliOpers;
-    private AdminInterface admin;
+    private AdministrationInterface admin;
     private StudentsTableModel stm;
     private GroupsTableModel gtm;
 

@@ -1,6 +1,6 @@
 package client.model;
 
-import common_model.AdminInterface;
+import common_model.AdministrationInterface;
 import common_model.Group;
 import common_model.Student;
 import common_model.Util_msg;
@@ -22,7 +22,7 @@ public class IoXML implements IoInterface {
     public static final Logger log = LogManager.getLogger(ISClient.class);
 
     private XmlClientOperations cliOpers = new XmlClientOperations();
-    private AdminInterface adm;
+    private AdministrationInterface adm;
     private ISClient isClient;
 
 
@@ -31,7 +31,7 @@ public class IoXML implements IoInterface {
      * @param adm  - ссылка на эклемпляр класса AdminInterface
      * @param isClient  - ссылка на эклемпляр класса ISClient
      */
-    public IoXML(AdminInterface adm, ISClient isClient) {
+    public IoXML(AdministrationInterface adm, ISClient isClient) {
         this.adm = adm;
         this.isClient = isClient;
         log.info("IoXML constructor.");

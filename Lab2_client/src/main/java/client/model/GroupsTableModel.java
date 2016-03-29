@@ -1,6 +1,6 @@
 package client.model;
 
-import common_model.AdminInterface;
+import common_model.AdministrationInterface;
 import common_model.Group;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -17,7 +17,7 @@ public class GroupsTableModel extends AbstractTableModel {
 
     private static final long serialVersionUID = 2000L;
     private final int columnCount = 3;
-    private AdminInterface admin;
+    private AdministrationInterface admin;
     private IoInterface io; // = new IoXML(admin);
     private Group searchTemplate = new Group(null, null, null);  // шаблон поиска
 
@@ -27,7 +27,7 @@ public class GroupsTableModel extends AbstractTableModel {
      * @param admin  - ссылка на объект класса AdminInterface
      * @param io     - ссылка на объект класса IoInterface
      */
-    public GroupsTableModel(AdminInterface admin, IoInterface io) {  // constructor
+    public GroupsTableModel(AdministrationInterface admin, IoInterface io) {  // constructor
         super();
         this.admin = admin;
         this.io = io;

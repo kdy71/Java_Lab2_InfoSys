@@ -1,6 +1,6 @@
 package client.model;
 
-import common_model.AdminInterface;
+import common_model.AdministrationInterface;
 import common_model.Group;
 import common_model.Student;
 import common_model.Util_dates;
@@ -21,7 +21,7 @@ public class StudentsTableModel extends AbstractTableModel {
 
     private static final long serialVersionUID = 1000L;
     private int columnCount = 4;
-    private AdminInterface admin;
+    private AdministrationInterface admin;
     private IoInterface io; // = new IoXML(admin);
     private Student searchTemplate = new Student(null, null, null, null);  // шаблон поиска студентов
 
@@ -31,7 +31,7 @@ public class StudentsTableModel extends AbstractTableModel {
      * @param admin  - ссылка на объект класса AdminInterface
      * @param io     - ссылка на объект класса IoInterface
      */
-    public StudentsTableModel(AdminInterface admin, IoInterface io) {  // constructor
+    public StudentsTableModel(AdministrationInterface admin, IoInterface io) {  // constructor
         super();
         this.admin = admin;
         this.io = io;
