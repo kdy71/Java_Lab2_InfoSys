@@ -1,0 +1,1 @@
+java -jar  Lab2_client/target/Lab2_client-1.0-SNAPSHOT-jar-with-dependencies.jar 
