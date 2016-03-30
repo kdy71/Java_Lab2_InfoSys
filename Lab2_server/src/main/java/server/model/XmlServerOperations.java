@@ -35,14 +35,17 @@ import java.text.SimpleDateFormat;
  */
 public class XmlServerOperations {
 
-    private static String STUDENTS_XML_PATH = ".\\resources\\students.xml";
-    private static String GROUPS_XML_PATH = ".\\resources\\groups.xml";
+    private static String STUDENTS_XML_PATH = ".\\data_files\\students.xml";
+    private static String GROUPS_XML_PATH   = ".\\data_files\\groups.xml";
+    private static String GROUP_ID_PATH     = ".\\data_files\\groupId.xml";
+    private static String STUD_ID_PATH      = ".\\data_files\\studId.xml";
 
     public static final Logger log = LogManager.getLogger(XmlServerOperations.class);
 
     /**
      * Performs one of the actions (add / delete / update / find) depending on content of the message received
      * from client.
+     *
      * @param message xml-string received from client
      * @return xml-string with found objects for action "find", empty string for other actions.
      */
@@ -69,9 +72,8 @@ public class XmlServerOperations {
             if ("find".equals(document.getDocumentElement().getLastChild().getTextContent())) {
                 return findObjectsInXmlFile(document);
             }
-        }
-        catch (ParserConfigurationException | SAXException | IOException | TransformerException | JAXBException e) {
-            Util_msg.showError("Ошибка при обработке команды от клиента.\n"+e.getMessage());
+        } catch (GetDocumentFromXmlException | TransformerException | JAXBException e) {
+            Util_msg.showError("Ошибка при обработке команды от клиента.\n" + e.getMessage());
             e.printStackTrace();
             log.error("Exception while executing action(create, delete, update, find) with message from client." + e);
         }
@@ -79,15 +81,13 @@ public class XmlServerOperations {
     }
 
     /**
-     * Identify type of objects in xml-document and looking for objects.
+     * Identify type of objects in xml-document and looks for objects.
+     *
      * @param document document of xml-string from client
      * @return xml-string of found objects
-     * @throws ParserConfigurationException
-     * @throws SAXException
-     * @throws IOException
+     * @throws GetDocumentFromXmlException
      */
-    private static String findObjectsInXmlFile(Document document)
-            throws ParserConfigurationException, SAXException, IOException {
+    private static String findObjectsInXmlFile(Document document) throws GetDocumentFromXmlException {
         //узнаем тип искомого объекта
         if ("group".equals(document.getDocumentElement().getTagName())) {
             return findGroups(document);
@@ -102,16 +102,15 @@ public class XmlServerOperations {
     /**
      * Looks for groups with given parameters. If already existed group matches with necessary
      * parameters it goes to the document of found results. Then method form xml-string of found groups.
+     *
      * @param document document of of request from client
      * @return xml-string of found groups
-     * @throws IOException
-     * @throws SAXException
-     * @throws ParserConfigurationException
+     * @throws GetDocumentFromXmlException
      */
-    private static String findGroups(Document document) throws IOException, SAXException, ParserConfigurationException {
+    private static String findGroups(Document document) throws GetDocumentFromXmlException {
         int amountOfNullParameters = countNullParameters(document);
 
-        String id = document.getDocumentElement().getFirstChild().getTextContent();
+        //String id = document.getDocumentElement().getFirstChild().getTextContent();
         String name = document.getDocumentElement().getFirstChild().getNextSibling().getTextContent();
         String facultyName = document.getDocumentElement().getFirstChild().getNextSibling().
                 getNextSibling().getTextContent();
@@ -126,7 +125,7 @@ public class XmlServerOperations {
                 NodeList nodes = element.getChildNodes();
                 int countOfMatchings = 0;
 
-                for (int j = 0; j < nodes.getLength(); j++) { //in cycle gets every node
+                for (int j = 0; j < nodes.getLength(); j++) { //in cycle gets every group
                     if (nodes.item(j).getNodeType() == Node.ELEMENT_NODE) {
                         if ("name".equals(nodes.item(j).getNodeName()) //doesn't look up by ID
                                 && name.equals(nodes.item(j).getTextContent())
@@ -149,15 +148,14 @@ public class XmlServerOperations {
     /**
      * Looks for students with given parameters. If already existed student matches with necessary
      * parameters he/she goes to the document of found results. Then method form xml-string of found students.
+     *
      * @param document document of request from client
      * @return xml-string of found student
-     * @throws IOException
-     * @throws SAXException
-     * @throws ParserConfigurationException
+     * @throws GetDocumentFromXmlException
      */
-    private static String findStudents(Document document) throws IOException, SAXException, ParserConfigurationException {
+    private static String findStudents(Document document) throws GetDocumentFromXmlException {
         int amountOfNullParameters = countNullParameters(document);
-        if (amountOfNullParameters == 4 ) {
+        if (amountOfNullParameters == 4) {
             return documentToString(getDocumentFromFile(STUDENTS_XML_PATH)); //if request is empty, returns all existed students
         }
 
@@ -171,14 +169,14 @@ public class XmlServerOperations {
         Document documentOfXmlFile = getDocumentFromFile(STUDENTS_XML_PATH);
         Document documentOfFoundResults;
 
-        NodeList items = documentOfXmlFile.getDocumentElement().getChildNodes(); ////gets all nodes
+        NodeList items = documentOfXmlFile.getDocumentElement().getChildNodes(); //gets all nodes
         for (int i = 0; i < items.getLength(); i++) {
             if ("student".equals(items.item(i).getNodeName())) {
                 Element element = (Element) items.item(i);
                 NodeList nodes = element.getChildNodes();
                 int countOfMatchings = 0;
 
-                for (int j = 0; j < nodes.getLength(); j++) { //в цикле выводим содержимое каждого тега внутри группы
+                for (int j = 0; j < nodes.getLength(); j++) { //in cycle gets every student
                     if (nodes.item(j).getNodeType() == Node.ELEMENT_NODE) {
                         if (("name".equals(nodes.item(j).getNodeName()) //doesn't look up by ID
                                 && name.equals(nodes.item(j).getTextContent()))
@@ -203,6 +201,7 @@ public class XmlServerOperations {
 
     /**
      * Counts number of parameters that wasn't specified in find-request.
+     *
      * @param document document of request from client
      * @return amount of null parameters
      */
@@ -225,14 +224,14 @@ public class XmlServerOperations {
     /**
      * Specifies type of object (student or group). Then adds information about object to the xml-file
      * that contains information about all similar objects.
-     * @param object added object(student or group)
+     *
+     * @param object           added object(student or group)
      * @param documentOfObject document of added object
-     * @throws IOException
-     * @throws SAXException
-     * @throws ParserConfigurationException
+     * @throws GetDocumentFromXmlException
      * @throws TransformerException
      */
-    public static void addObjectToXmlFile(Object object, Document documentOfObject) throws IOException, SAXException, ParserConfigurationException, TransformerException {
+    public static void addObjectToXmlFile(Object object, Document documentOfObject)
+            throws TransformerException, GetDocumentFromXmlException {
         if ("group".equals(documentOfObject.getDocumentElement().getTagName())) {
             addGroupToXmlFile((Group) object);
             log.info("Information about group was added to corresponding xml-file.");
@@ -245,17 +244,18 @@ public class XmlServerOperations {
 
     /**
      * Adds information about student to the xml-file that contains information about all students.
+     *
      * @param student new student
-     * @throws ParserConfigurationException
-     * @throws IOException
-     * @throws SAXException
+     * @throws GetDocumentFromXmlException
      * @throws TransformerException
      */
-    public static void addStudentToXmlFile(Student student) throws ParserConfigurationException, IOException, SAXException, TransformerException {
+    public static void addStudentToXmlFile(Student student)
+            throws TransformerException, GetDocumentFromXmlException {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-        DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-        Document document = db.parse(STUDENTS_XML_PATH); //создали документ файла Students
+        //DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+        //Document document = db.parse(STUDENTS_XML_PATH); //создали документ файла Students
+        Document document = getDocumentFromFile(STUDENTS_XML_PATH);
 
         Element root = document.getDocumentElement();
         Element elementStudent = document.createElement("student");
@@ -281,16 +281,16 @@ public class XmlServerOperations {
 
     /**
      * Adds information about group to the xml-file that contains information about all groups.
+     *
      * @param group new group
-     * @throws ParserConfigurationException
-     * @throws IOException
-     * @throws SAXException
+     * @throws GetDocumentFromXmlException
      * @throws TransformerException
      */
-    private static void addGroupToXmlFile(Group group) throws ParserConfigurationException, IOException, SAXException, TransformerException {
-        DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-        Document document = db.parse(GROUPS_XML_PATH); //создали документ файла Groups
-
+    private static void addGroupToXmlFile(Group group)
+            throws TransformerException, GetDocumentFromXmlException {
+        //DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+        //Document document = db.parse(GROUPS_XML_PATH); //создали документ файла Groups
+        Document document = getDocumentFromFile(GROUPS_XML_PATH);
         Element root = document.getDocumentElement();
         Element elementGroup = document.createElement("group");
         root.appendChild(elementGroup);
@@ -313,13 +313,13 @@ public class XmlServerOperations {
     /**
      * Specifies type of object (student or group). Then deletes information about object from the xml-file
      * that contains information about all similar objects.
+     *
      * @param document document of deleted object
-     * @throws ParserConfigurationException
-     * @throws SAXException
-     * @throws IOException
+     * @throws GetDocumentFromXmlException
      * @throws TransformerException
      */
-    public static void deleteObjectFromXmlFile(Document document) throws ParserConfigurationException, SAXException, IOException, TransformerException {
+    public static void deleteObjectFromXmlFile(Document document)
+            throws TransformerException, GetDocumentFromXmlException {
         if ("student".equals(document.getDocumentElement().getTagName())) {
             delete(document, STUDENTS_XML_PATH);
             log.info("Information about student was deleted from corresponding xml-file.");
@@ -333,15 +333,14 @@ public class XmlServerOperations {
 
     /**
      * Deletes information about object from the xml-file of similar objects.
+     *
      * @param document document of deleted object
      * @param filePath path to xml-file of students or groups
-     * @throws IOException
-     * @throws SAXException
-     * @throws ParserConfigurationException
+     * @throws GetDocumentFromXmlException
      * @throws TransformerException
      */
     private static void delete(Document document, String filePath)
-            throws IOException, SAXException, ParserConfigurationException, TransformerException {
+            throws TransformerException, GetDocumentFromXmlException {
 
         Element elementId = (Element) document.getDocumentElement().getFirstChild();
         int objectId = Integer.valueOf(elementId.getTextContent()); //gets ID
@@ -368,15 +367,14 @@ public class XmlServerOperations {
     /**
      * Specifies type of the object (student or group). Then updates information about the object in the xml-file
      * that contains information about all similar objects.
-     * @param object updated object (student or group)
+     *
+     * @param object           updated object (student or group)
      * @param documentOfObject document of updated object
-     * @throws IOException
-     * @throws SAXException
-     * @throws ParserConfigurationException
+     * @throws GetDocumentFromXmlException
      * @throws TransformerException
      */
     public static void updateObjectInXmlFile(Object object, Document documentOfObject)
-            throws IOException, SAXException, ParserConfigurationException, TransformerException {
+            throws TransformerException, GetDocumentFromXmlException {
 
         if ("group".equals(documentOfObject.getDocumentElement().getTagName())) {
             delete(documentOfObject, GROUPS_XML_PATH);
@@ -392,17 +390,22 @@ public class XmlServerOperations {
 
     /**
      * Creates document from xml-string received from client.
+     *
      * @param message message from client
      * @return document
-     * @throws ParserConfigurationException
-     * @throws IOException
-     * @throws SAXException
+     * @throws GetDocumentFromXmlException
      */
-    public static Document getDocumentFromString(String message) throws ParserConfigurationException, IOException, SAXException {
-        DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-        InputSource is = new InputSource();
-        is.setCharacterStream(new StringReader(message));
-        Document document = db.parse(is);
+    public static Document getDocumentFromString(String message) throws GetDocumentFromXmlException {
+        DocumentBuilder db;
+        Document document;
+        try {
+            db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+            InputSource is = new InputSource();
+            is.setCharacterStream(new StringReader(message));
+            document = db.parse(is);
+        } catch (IOException | ParserConfigurationException | SAXException e) {
+            throw new GetDocumentFromXmlException("There is a exception " + e + " while getting document from string: " + message);
+        }
 
         log.info("SERVER. Document from client xml-request was formed.");
         return document;
@@ -410,33 +413,34 @@ public class XmlServerOperations {
 
     /**
      * Creates document from xml-file.
+     *
      * @param filePath path to xml-file
      * @return document of xml-file
-     * @throws ParserConfigurationException
-     * @throws IOException
-     * @throws SAXException
+     * @throws GetDocumentFromXmlException
      */
-    public static Document getDocumentFromFile(String filePath)
-            throws ParserConfigurationException, IOException, SAXException {
+    public static Document getDocumentFromFile(String filePath) throws GetDocumentFromXmlException {
+        Document document;
+        try {
+            document = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(filePath);
+        } catch (IOException | ParserConfigurationException | SAXException e) {
+            throw new GetDocumentFromXmlException("There is a exception " + e + " while getting document from file: " + filePath);
+        }
 
         log.info("Xml-file of objects was parsed. Document was created.");
-        return DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(filePath);
+        return document;
     }
 
     /**
      * Unmarshals object from its document. If the object is a new one, then set unique ID.
+     *
      * @param documentOfObject document of object
      * @return unmarshaled object
      * @throws JAXBException
-     * @throws IOException
-     * @throws SAXException
-     * @throws ParserConfigurationException
+     * @throws GetDocumentFromXmlException
      * @throws TransformerException
      */
     public static Object unmarshalObject(Document documentOfObject)
-            throws JAXBException, IOException, SAXException, ParserConfigurationException, TransformerException {
-        String GROUP_ID_PATH = ".\\resources\\groupId.xml";
-        String STUD_ID_PATH = ".\\resources\\studId.xml";
+            throws JAXBException, TransformerException, GetDocumentFromXmlException {
 
         if (documentOfObject == null) throw new IllegalArgumentException("Parameter Document is null");
         Node node = documentOfObject.getDocumentElement();
@@ -465,16 +469,15 @@ public class XmlServerOperations {
 
     /**
      * Sets unique ID to newly created object. Updates value of unique id in xml-file.
+     *
      * @param pathToId path to xml-file with unique ID
      * @return int value of unique id
-     * @throws ParserConfigurationException
-     * @throws IOException
-     * @throws SAXException
+     * @throws GetDocumentFromXmlException
      * @throws TransformerException
      */
     private static int getUniqueId(String pathToId)
-            throws ParserConfigurationException, IOException, SAXException, TransformerException {
-        Document document = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(pathToId);
+            throws GetDocumentFromXmlException, TransformerException {
+        Document document = getDocumentFromFile(pathToId);
         Element element = document.getDocumentElement();
         Integer id = Integer.parseInt(element.getTextContent());
         int newId = id + 1;
@@ -486,9 +489,11 @@ public class XmlServerOperations {
         return id;
     }
 
+
     /**
      * Rewrites xml-file after adding new object.
-     * @param document document with added object
+     *
+     * @param document          document with added object
      * @param rewrittenFilePath path to xml-file of students or groups
      * @throws TransformerException
      */
@@ -507,6 +512,7 @@ public class XmlServerOperations {
 
     /**
      * Creates xml-string from document.
+     *
      * @param document document
      * @return xml as a string
      */

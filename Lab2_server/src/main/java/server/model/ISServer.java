@@ -50,7 +50,6 @@ public class ISServer {
      * Для каждого подключенного клиента создаёт отдельный поток - экземпляр класса ClientThread implements Runnable
      */
     private void startServer() {
-        int i = 1;
         ArrayList clientList = new ArrayList();
         try {
             serverSocket = new ServerSocket(port); //создаем серверСокет

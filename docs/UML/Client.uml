@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>client.controller.MainClient</OriginalElement>
+  <nodes>
+    <node x="1084.0833333333335" y="266.0">client.model.GroupsTableModel</node>
+    <node x="2142.5833333333335" y="912.0">client.model.ClientEar</node>
+    <node x="543.2872807017543" y="240.0">client.view.TemplateGUI</node>
+    <node x="1504.0833333333335" y="306.0">client.model.XmlClientOperations</node>
+    <node x="0.0" y="240.0">client.model.StudentsTableModel</node>
+    <node x="1865.0833333333335" y="344.0">client.model.ISClient</node>
+    <node x="1225.9122807017545" y="1363.0">client.controller.MainClient</node>
+    <node x="1654.5833333333335" y="860.0">client.model.IoXML</node>
+    <node x="1129.212719298246" y="0.0">client.model.IoInterface</node>
+    <node x="228.6622807017543" y="769.0">client.view.StudentsGUI</node>
+    <node x="794.6622807017543" y="795.0">client.view.GroupsGUI</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="client.model.IoXML" target="client.model.XmlClientOperations">
+      <point x="-40.0" y="-161.0" />
+      <point x="1774.5833333333335" y="744.0" />
+      <point x="1801.5833333333335" y="744.0" />
+      <point x="127.5" y="173.5" />
+    </edge>
+    <edge source="client.model.GroupsTableModel" target="client.model.IoInterface">
+      <point x="0.0" y="-213.5" />
+      <point x="1284.0833333333335" y="215.0" />
+      <point x="1286.712719298246" y="215.0" />
+      <point x="0.0" y="95.0" />
+    </edge>
+    <edge source="client.controller.MainClient" target="client.view.StudentsGUI">
+      <point x="-133.29166666666674" y="-147.5" />
+      <point x="1321.1206140350878" y="1323.0" />
+      <point x="501.6622807017543" y="1323.0" />
+      <point x="0.0" y="252.0" />
+    </edge>
+    <edge source="client.controller.MainClient" target="client.model.IoXML">
+      <point x="95.20833333333326" y="-147.5" />
+      <point x="1549.6206140350878" y="1313.0" />
+      <point x="1814.5833333333335" y="1313.0" />
+      <point x="0.0" y="161.0" />
+    </edge>
+    <edge source="client.model.IoXML" target="client.model.IoInterface">
+      <point x="40.0" y="-161.0" />
+      <point x="1854.5833333333335" y="215.0" />
+      <point x="1391.712719298246" y="215.0" />
+      <point x="105.0" y="95.0" />
+    </edge>
+    <edge source="client.view.GroupsGUI" target="client.model.GroupsTableModel">
+      <point x="124.75" y="-226.0" />
+      <point x="1168.9122807017543" y="744.0" />
+      <point x="1150.75" y="744.0" />
+      <point x="-133.33333333333326" y="213.5" />
+    </edge>
+    <edge source="client.controller.MainClient" target="client.model.ISClient">
+      <point x="133.29166666666674" y="-147.5" />
+      <point x="1587.7039473684213" y="1323.0" />
+      <point x="2132.0833333333335" y="1323.0" />
+      <point x="89.00000000000023" y="135.5" />
+    </edge>
+    <edge source="client.controller.MainClient" target="client.model.XmlClientOperations">
+      <point x="57.125" y="-147.5" />
+      <point x="1511.5372807017545" y="1303.0" />
+      <point x="1594.5833333333335" y="1303.0" />
+      <point x="1594.5833333333335" y="744.0" />
+      <point x="1631.5833333333335" y="744.0" />
+      <point x="-42.5" y="173.5" />
+    </edge>
+    <edge source="client.controller.MainClient" target="client.model.ClientEar">
+      <point x="171.375" y="-147.5" />
+      <point x="1625.7872807017545" y="1333.0" />
+      <point x="2202.5833333333335" y="1333.0" />
+      <point x="-60.0" y="109.0" />
+    </edge>
+    <edge source="client.model.ClientEar" target="client.controller.MainClient">
+      <point x="59.999999999999886" y="109.0" />
+      <point x="2322.5833333333335" y="1343.0" />
+      <point x="1663.8706140350878" y="1343.0" />
+      <point x="209.45833333333326" y="-147.5" />
+    </edge>
+    <edge source="client.model.StudentsTableModel" target="client.model.IoInterface">
+      <point x="0.0" y="-239.5" />
+      <point x="220.0" y="215.0" />
+      <point x="1181.712719298246" y="215.0" />
+      <point x="-105.0" y="95.0" />
+    </edge>
+    <edge source="client.view.StudentsGUI" target="client.view.TemplateGUI">
+      <point x="136.5" y="-252.0" />
+      <point x="638.1622807017543" y="744.0" />
+      <point x="661.0372807017543" y="744.0" />
+      <point x="-117.75" y="239.5" />
+    </edge>
+    <edge source="client.model.IoXML" target="client.model.ISClient">
+      <point x="120.0" y="-161.0" />
+      <point x="1934.5833333333335" y="744.0" />
+      <point x="1954.0833333333335" y="744.0" />
+      <point x="-89.0" y="135.5" />
+    </edge>
+    <edge source="client.controller.MainClient" target="client.model.StudentsTableModel">
+      <point x="-171.375" y="-147.5" />
+      <point x="1283.0372807017545" y="1333.0" />
+      <point x="181.4539473684208" y="1333.0" />
+      <point x="181.4539473684208" y="744.0" />
+      <point x="220.0" y="744.0" />
+      <point x="0.0" y="239.5" />
+    </edge>
+    <edge source="client.view.GroupsGUI" target="client.view.TemplateGUI">
+      <point x="-124.75" y="-226.0" />
+      <point x="919.4122807017543" y="744.0" />
+      <point x="896.5372807017543" y="744.0" />
+      <point x="117.75" y="239.5" />
+    </edge>
+    <edge source="client.controller.MainClient" target="client.model.GroupsTableModel">
+      <point x="-57.125" y="-147.5" />
+      <point x="1397.2872807017545" y="1303.0" />
+      <point x="1341.828947368421" y="1303.0" />
+      <point x="1341.828947368421" y="744.0" />
+      <point x="1284.0833333333335" y="744.0" />
+      <point x="0.0" y="213.5" />
+    </edge>
+    <edge source="client.controller.MainClient" target="client.view.GroupsGUI">
+      <point x="-95.20833333333348" y="-147.5" />
+      <point x="1359.203947368421" y="1313.0" />
+      <point x="1044.1622807017543" y="1313.0" />
+      <point x="0.0" y="226.0" />
+    </edge>
+    <edge source="client.view.StudentsGUI" target="client.model.StudentsTableModel">
+      <point x="-136.5" y="-252.0" />
+      <point x="365.1622807017543" y="744.0" />
+      <point x="366.66666666666663" y="744.0" />
+      <point x="146.66666666666663" y="239.5" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="0.49821215733015495" x="1191.5" y="829.0" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Fields</Category>
+    <Category>Constructors</Category>
+    <Category>Methods</Category>
+    <Category>Properties</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

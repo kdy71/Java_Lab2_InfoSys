@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>common_model.Administration</OriginalElement>
+  <nodes>
+    <node x="1093.0" y="207.5">common_model.Group</node>
+    <node x="799.0" y="181.5">common_model.Student</node>
+    <node x="469.0" y="1388.0">common_model.DateAdapter</node>
+    <node x="0.0" y="1388.0">common_model.UtilDates</node>
+    <node x="796.0" y="1388.0">common_model.UtilMessage</node>
+    <node x="0.0" y="0.0">common_model.AdministrationInterface</node>
+    <node x="713.875" y="683.0">common_model.Administration</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="common_model.Administration" target="common_model.Group">
+      <point x="231.0" y="-330.0" />
+      <point x="1252.875" y="658.0" />
+      <point x="1261.75" y="658.0" />
+      <point x="56.25" y="109.0" />
+    </edge>
+    <edge source="common_model.Administration" target="common_model.AdministrationInterface">
+      <point x="-231.0" y="-330.0" />
+      <point x="790.875" y="658.0" />
+      <point x="389.5" y="658.0" />
+      <point x="0.0" y="316.5" />
+    </edge>
+    <edge source="common_model.Administration" target="common_model.Student">
+      <point x="-77.0" y="-330.0" />
+      <point x="944.875" y="658.0" />
+      <point x="936.0" y="658.0" />
+      <point x="0.0" y="135.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="0.5314685314685315" x="665.0" y="777.0" />
+  <SelectedNodes>
+    <node>common_model.Administration</node>
+  </SelectedNodes>
+  <Categories>
+    <Category>Fields</Category>
+    <Category>Constructors</Category>
+    <Category>Properties</Category>
+    <Category>Methods</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+
